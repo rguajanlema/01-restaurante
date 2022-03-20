@@ -1,5 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { firebaseApp } from "./app/utils/firebase";
 
 //components
 import Navigation from "./app/navigations/Navigation";
