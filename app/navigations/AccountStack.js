@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Account from "../screens/Account";
+import Account from "../screens/Account/Account";
 
 const Stack = createStackNavigator();
 
@@ -10,7 +10,7 @@ export default function AccountStack() {
       <Stack.Screen
         name="account"
         component={Account}
-        options={{ title: "Cuenta" }}
+        options={{ title: "Mi cuenta" }}
       />
     </Stack.Navigator>
   );
