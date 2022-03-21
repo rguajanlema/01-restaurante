@@ -6,15 +6,16 @@ import { size, isEmpty } from "lodash";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import Loading from "../Loading";
 
 const auth = getAuth();
 
 export default function RegisterForm(props) {
   const { toastRef } = props;
-
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [formData, setFormData] = useState(defaultFormValue());
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const onSubmit = () => {
@@ -33,12 +34,15 @@ export default function RegisterForm(props) {
         "La contrasena tiene que tener al menos 6 caracteres"
       );
     } else {
+      setLoading(true);
       //regitracion de usuario
       createUserWithEmailAndPassword(auth, formData.email, formData.password)
         .then(() => {
+          setLoading(false);
           navigation.navigate("account");
         })
         .catch(() => {
+          setLoading(false);
           toastRef.current.show("El email ya esta en uso, pruebe con otro");
         });
     }
@@ -99,6 +103,7 @@ export default function RegisterForm(props) {
         buttonStyle={styles.btnRegister}
         onPress={onSubmit}
       />
+      <Loading isVisible={loading} text="Creando cuenta" />
     </View>
   );
 }
