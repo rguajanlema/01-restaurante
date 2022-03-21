@@ -8,18 +8,39 @@ export default function RegisterForm() {
       <Input
         placeholder="Correo electronico"
         containerStyle={styles.inputForm}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name="at"
+            iconStyle={styles.iconRight}
+          />
+        }
       />
       <Input
         placeholder="Contrasena"
         containerStyle={styles.inputForm}
         password={true}
         secureTextEntry={true}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name="eye-outline"
+            iconStyle={styles.iconStyle}
+          />
+        }
       />
       <Input
         placeholder="Repetir contrasena"
         containerStyle={styles.inputForm}
         password={true}
         secureTextEntry={true}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name="eye-outline"
+            iconStyle={styles.iconStyle}
+          />
+        }
       />
       <Button
         title="Unirse"
@@ -32,9 +53,9 @@ export default function RegisterForm() {
 
 const styles = StyleSheet.create({
   formContainer: {
-    //flex: 1,
-    //alignItems: "center",
-    //justifyContent: "center",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 30,
   },
   inputForm: {
@@ -47,5 +68,11 @@ const styles = StyleSheet.create({
   },
   btnRegister: {
     backgroundColor: "#00a680",
+  },
+  iconRight: {
+    color: "#c1c1c1",
+  },
+  iconStyle: {
+    color: "#c1c1c1",
   },
 });
