@@ -4,12 +4,18 @@ import { Input, Icon, Button } from "react-native-elements";
 import { validateEmail } from "../../utils/validations";
 import { size, isEmpty } from "lodash";
 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+
+const auth = getAuth();
+
 export default function RegisterForm(props) {
   const { toastRef } = props;
 
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [formData, setFormData] = useState(defaultFormValue());
+  const navigation = useNavigation();
 
   const onSubmit = () => {
     if (
@@ -27,7 +33,14 @@ export default function RegisterForm(props) {
         "La contrasena tiene que tener al menos 6 caracteres"
       );
     } else {
-      console.log("ok");
+      //regitracion de usuario
+      createUserWithEmailAndPassword(auth, formData.email, formData.password)
+        .then(() => {
+          navigation.navigate("account");
+        })
+        .catch(() => {
+          toastRef.current.show("El email ya esta en uso, pruebe con otro");
+        });
     }
   };
 
