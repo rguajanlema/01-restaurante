@@ -5,12 +5,25 @@ import { Input, Icon, Button } from "react-native-elements";
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [formData, setFormData] = useState(defaultFormValue());
+
+  const onSubmit = () => {
+    console.log(formData);
+    //obtenemos elementos del evento
+    //console.log(e.nativeEvent.text);
+  };
+
+  const onChange = (e, type) => {
+    //obtenemos el valor de la date
+    setFormData({ ...formData, [type]: e.nativeEvent.text });
+  };
 
   return (
     <View style={styles.formContainer}>
       <Input
         placeholder="Correo electronico"
         containerStyle={styles.inputForm}
+        onChange={(e) => onChange(e, "email")}
         rightIcon={
           <Icon
             type="material-community"
@@ -24,6 +37,7 @@ export default function RegisterForm() {
         containerStyle={styles.inputForm}
         password={true}
         secureTextEntry={showPassword ? false : true}
+        onChange={(e) => onChange(e, "password")}
         rightIcon={
           <Icon
             type="material-community"
@@ -38,6 +52,7 @@ export default function RegisterForm() {
         containerStyle={styles.inputForm}
         password={true}
         secureTextEntry={showRepeatPassword ? false : true}
+        onChange={(e) => onChange(e, "repeatpassword")}
         rightIcon={
           <Icon
             type="material-community"
@@ -51,9 +66,18 @@ export default function RegisterForm() {
         title="Unirse"
         containerStyle={styles.btnContainerRegister}
         buttonStyle={styles.btnRegister}
+        onPress={onSubmit}
       />
     </View>
   );
+}
+
+function defaultFormValue() {
+  return {
+    email: "",
+    password: "",
+    repeatPassword: "",
+  };
 }
 
 const styles = StyleSheet.create({
