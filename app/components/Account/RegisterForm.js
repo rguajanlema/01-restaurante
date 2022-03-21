@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
+import { validateEmail } from "../../utils/validations";
 
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -8,9 +9,10 @@ export default function RegisterForm() {
   const [formData, setFormData] = useState(defaultFormValue());
 
   const onSubmit = () => {
-    console.log(formData);
+    //console.log(formData);
     //obtenemos elementos del evento
     //console.log(e.nativeEvent.text);
+    console.log(validateEmail(formData.email));
   };
 
   const onChange = (e, type) => {
