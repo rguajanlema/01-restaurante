@@ -11,3 +11,5 @@ expo install @react-native-community/masked-view@~0.1.6
 yarn add @react-navigation/stack@~5.2.10
 
 yarn add @react-navigation/bottom-tabs@~5.2.6
+
+prueba de cambios

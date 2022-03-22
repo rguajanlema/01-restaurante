@@ -1,56 +1,41 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
-import { validateEmail } from "../../utils/validations";
-import { size, isEmpty } from "lodash";
-
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { isEmpty } from "lodash";
 import { useNavigation } from "@react-navigation/native";
+import { validateEmail } from "../../utils/validations";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Loading from "../Loading";
 
 const auth = getAuth();
 
-export default function RegisterForm(props) {
+export default function LoginForm(props) {
   const { toastRef } = props;
   const [showPassword, setShowPassword] = useState(false);
-  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [formData, setFormData] = useState(defaultFormValue());
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
+  const onChange = (e, type) => {
+    setFormData({ ...formData, [type]: e.nativeEvent.text });
+  };
   const onSubmit = () => {
-    if (
-      isEmpty(formData.email) ||
-      isEmpty(formData.password) ||
-      isEmpty(formData.repeatpassword)
-    ) {
+    if (isEmpty(formData.email) || isEmpty(formData.password)) {
       toastRef.current.show("Todos los campos son obligatorios");
     } else if (!validateEmail(formData.email)) {
-      toastRef.current.show("El email no es correcto");
-    } else if (formData.password !== formData.repeatpassword) {
-      toastRef.current.show("Las contrasenas tiene que ser iguales");
-    } else if (size(formData.password) < 6) {
-      toastRef.current.show(
-        "La contrasena tiene que tener al menos 6 caracteres"
-      );
+      toastRef.current.show("Email no es correcto");
     } else {
       setLoading(true);
-      //regitracion de usuario
-      createUserWithEmailAndPassword(auth, formData.email, formData.password)
+      signInWithEmailAndPassword(auth, formData.email, formData.password)
         .then(() => {
           setLoading(false);
           navigation.navigate("account");
         })
         .catch(() => {
           setLoading(false);
-          toastRef.current.show("El email ya esta en uso, pruebe con otro");
+          toastRef.current.show("Email o contraseña incorrecta");
         });
     }
-  };
-
-  const onChange = (e, type) => {
-    //obtenemos el valor de la date
-    setFormData({ ...formData, [type]: e.nativeEvent.text });
   };
 
   return (
@@ -68,7 +53,7 @@ export default function RegisterForm(props) {
         }
       />
       <Input
-        placeholder="Contrasena"
+        placeholder="Contraseña"
         containerStyle={styles.inputForm}
         password={true}
         secureTextEntry={showPassword ? false : true}
@@ -77,33 +62,18 @@ export default function RegisterForm(props) {
           <Icon
             type="material-community"
             name={showPassword ? "eye-off-outline" : "eye-outline"}
-            iconStyle={styles.iconStyle}
+            iconStyle={styles.iconRight}
             onPress={() => setShowPassword(!showPassword)}
           />
         }
       />
-      <Input
-        placeholder="Repetir contrasena"
-        containerStyle={styles.inputForm}
-        password={true}
-        secureTextEntry={showRepeatPassword ? false : true}
-        onChange={(e) => onChange(e, "repeatpassword")}
-        rightIcon={
-          <Icon
-            type="material-community"
-            name="eye-outline"
-            iconStyle={styles.iconStyle}
-            onPress={() => setShowRepeatPassword(!showRepeatPassword)}
-          />
-        }
-      />
       <Button
-        title="Unirse"
-        containerStyle={styles.btnContainerRegister}
-        buttonStyle={styles.btnRegister}
+        title="Iniciar sesión"
+        containerStyle={styles.btnContainerLogin}
+        buttonStyle={styles.btnLogin}
         onPress={onSubmit}
       />
-      <Loading isVisible={loading} text="Creando cuenta" />
+      <Loading isVisible={loading} text="Iniciando sesión" />
     </View>
   );
 }
@@ -112,7 +82,6 @@ function defaultFormValue() {
   return {
     email: "",
     password: "",
-    repeatpassword: "",
   };
 }
 
@@ -127,17 +96,14 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 20,
   },
-  btnContainerRegister: {
+  btnContainerLogin: {
     marginTop: 20,
     width: "95%",
   },
-  btnRegister: {
+  btnLogin: {
     backgroundColor: "#00a680",
   },
   iconRight: {
-    color: "#c1c1c1",
-  },
-  iconStyle: {
     color: "#c1c1c1",
   },
 });
