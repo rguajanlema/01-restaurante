@@ -6,7 +6,7 @@ export default function InfoUser(props) {
   const {
     userInfo: { photoURL, displayName, email },
   } = props;
-
+  ///
   return (
     <View style={styles.viewUserInfo}>
       <Avatar
