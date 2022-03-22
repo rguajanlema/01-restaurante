@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Avatar } from "react-native-elements";
+import { Avatar, Accessory } from "react-native-elements";
 
 export default function InfoUser(props) {
   const {
     userInfo: { photoURL, displayName, email },
   } = props;
-  ///
+
   return (
     <View style={styles.viewUserInfo}>
       <Avatar
@@ -19,7 +19,9 @@ export default function InfoUser(props) {
             ? { uri: photoURL }
             : require("../../../assets/img/avatar-default.jpg")
         }
-      />
+      >
+        <Avatar.Accessory size={23} />
+      </Avatar>
       <View>
         <Text style={styles.displayName}>
           {displayName ? displayName : "Anónimo"}

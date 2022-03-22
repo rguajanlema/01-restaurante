@@ -14,6 +14,7 @@ export default function UserLogged() {
   const [loadingText, setLoadingText] = useState("");
   const toastRef = useRef();
 
+  //funcion auto ejecutable
   useEffect(() => {
     (async () => {
       const user = await auth.currentUser;
