@@ -1,11 +1,22 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Avatar } from "react-native-elements";
+import Permissions from "expo-permissions";
+import ImagePicker from "expo-image-picker";
 
 export default function InfoUser(props) {
   const {
     userInfo: { photoURL, displayName, email },
   } = props;
+
+  const changeAvatar = async () => {
+    const resultPermision = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const resultPermisionCamera =
+      resultPermision.permissions.CAMERA_ROLL.status;
+
+    if (resultPermision === "denied") {
+    }
+  };
 
   return (
     <View style={styles.viewUserInfo}>
@@ -19,7 +30,7 @@ export default function InfoUser(props) {
             : require("../../../assets/img/avatar-default.jpg")
         }
       >
-        <Avatar.Accessory size={23} />
+        <Avatar.Accessory size={23} onPress={changeAvatar} />
       </Avatar>
       <View>
         <Text style={styles.displayName}>
