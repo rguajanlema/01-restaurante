@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Avatar, Accessory } from "react-native-elements";
+import { Avatar } from "react-native-elements";
 
 export default function InfoUser(props) {
   const {
@@ -12,7 +12,6 @@ export default function InfoUser(props) {
       <Avatar
         rounded
         size="large"
-        showEditButton
         containerStyle={styles.userInfoAvatar}
         source={
           photoURL
