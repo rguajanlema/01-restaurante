@@ -1,20 +1,27 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, CameraRoll } from "react-native";
 import { Avatar } from "react-native-elements";
-import Permissions from "expo-permissions";
-import ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 
 export default function InfoUser(props) {
   const {
     userInfo: { photoURL, displayName, email },
+    toastRef,
   } = props;
 
   const changeAvatar = async () => {
-    const resultPermision = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    const resultPermisionCamera =
-      resultPermision.permissions.CAMERA_ROLL.status;
+    const resultPermision = await Permissions.askAsync(Permissions.CAMERA);
+    const resultPermisionCamera = resultPermision.permissions.camera.status;
 
-    if (resultPermision === "denied") {
+    if (resultPermisionCamera === "denied") {
+      toastRef.current.show("Es necesario aceptar los permisos de la galeria");
+    } else {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+      console.log(result);
     }
   };
 
