@@ -37,6 +37,7 @@ export default function InfoUser(props) {
             toastRef.current.show("Error al actualizar el avatar");
           });
       }
+      console.log(result);
     }
   };
 
