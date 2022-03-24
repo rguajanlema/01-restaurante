@@ -11,7 +11,7 @@ const firestore = getFirestore(firebaseApp);
 
 export default function InfoUser(props) {
   const {
-    userInfo: { photoURL, displayName, email },
+    userInfo: { uid, photoURL, displayName, email },
     toastRef,
   } = props;
 
@@ -41,13 +41,13 @@ export default function InfoUser(props) {
   };
 
   const uploadImage = async (uri) => {
-    const docuRef = doc(firestore, `avatar/${uri}`);
+    const docuRef = doc(firestore, `avatar/${uid}`);
     const consulta = await getDoc(docuRef);
     if (consulta.exists()) {
       const infoDocu = consulta.data();
       return infoDocu.Avatar;
     } else {
-      await setDoc(docuRef, uri);
+      await setDoc(docuRef, uid);
       const consulta = await getDoc(docuRef);
       const infoDocu = consulta.data();
       return infoDocu.Avatar;
