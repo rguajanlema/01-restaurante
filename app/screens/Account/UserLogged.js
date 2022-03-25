@@ -3,8 +3,11 @@ import { View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 import { getAuth, signOut } from "firebase/auth";
 import Toast from "react-native-easy-toast";
+
+//components
 import Loading from "../../components/Loading";
 import InfoUser from "../../components/Account/InfoUser";
+import AccountOptions from "../../components/Account/AccountOptions";
 
 const auth = getAuth();
 
@@ -24,9 +27,16 @@ export default function UserLogged() {
 
   return (
     <View style={styles.viewUserInfo}>
-      {userInfo && <InfoUser userInfo={userInfo} toastRef={toastRef} />}
+      {userInfo && (
+        <InfoUser
+          userInfo={userInfo}
+          toastRef={toastRef}
+          setLoading={setLoading}
+          setLoadingText={setLoadingText}
+        />
+      )}
 
-      <Text>AccountOptions</Text>
+      <AccountOptions userInfo={userInfo} toastRef={toastRef} />
       <Button
         title="Cerrar sesión"
         buttonStyle={styles.btnCloseSession}
