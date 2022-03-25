@@ -1,10 +1,12 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { ListItem, Icon } from "react-native-elements";
 import { map } from "lodash";
+import Modal from "../Modal";
 
 export default function AccountOptions(props) {
   const { userInfo, toastRef } = props;
+  const [showModal, setShowModal] = useState(true);
 
   const selectedComponent = (key) => {
     console.log("Click!!");
@@ -23,6 +25,9 @@ export default function AccountOptions(props) {
           <ListItem.Chevron />
         </ListItem>
       ))}
+      <Modal isVisible={showModal} setIsVisible={setShowModal}>
+        <Text>Hola Mundo</Text>
+      </Modal>
     </View>
   );
 }
