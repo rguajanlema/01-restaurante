@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { ListItem } from "react-native-elements";
+import { ListItem, Icon } from "react-native-elements";
 import { map } from "lodash";
 
 export default function AccountOptions(props) {
@@ -15,22 +15,13 @@ export default function AccountOptions(props) {
   return (
     <View>
       {map(menuOptions, (menu, index) => (
-        <ListItem
-          key={index}
-          title={menu.title}
-          leftIcon={{
-            type: menu.iconType,
-            name: menu.iconNameLeft,
-            color: menu.iconColorLeft,
-          }}
-          rightIcon={{
-            type: menu.iconType,
-            name: menu.iconNameRight,
-            color: menu.iconColorRight,
-          }}
-          containerStyle={styles.menuItem}
-          onPress={menu.onPress}
-        />
+        <ListItem key={index} bottomDivider onPress={menu.onPress}>
+          <Icon name={menu.iconNameLeft} selectionColor={menu.iconColorLeft} />
+          <ListItem.Content>
+            <ListItem.Title>{menu.title}</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
       ))}
     </View>
   );
@@ -50,7 +41,7 @@ function generateOptions(selectedComponent) {
     {
       title: "Cambiar Email",
       iconType: "material-community",
-      iconNameLeft: "at",
+      iconNameLeft: "alternate-email",
       iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
@@ -59,7 +50,7 @@ function generateOptions(selectedComponent) {
     {
       title: "Cambiar contraseña",
       iconType: "material-community",
-      iconNameLeft: "lock-reset",
+      iconNameLeft: "settings-backup-restore",
       iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
