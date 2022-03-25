@@ -17,38 +17,36 @@ export default function Navigation() {
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="restaurants"
-        tabBarOptions={{
-          inactiveTintColor: "#646464",
-          activeTintColor: "#00a680",
-        }}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color }) => screenOptions(route, color),
+          tabBarInactiveTintColor: "#646464",
+          tabBarActiveTintColor: "#00a680",
         })}
       >
         <Tab.Screen
-          name="restaurants"
+          name="restaurantsstack"
           component={RestaurantsStack}
-          options={{ title: "Restaurantes" }}
+          options={{ title: "Restaurantes", headerShown: false }}
         />
         <Tab.Screen
-          name="favorites"
+          name="favoritesstack"
           component={FavoritesStack}
-          options={{ title: "Favoritos" }}
+          options={{ title: "Favoritos", headerShown: false }}
         />
         <Tab.Screen
-          name="top-restaurants"
+          name="top-restaurantsstack"
           component={TopRestaurantsStack}
-          options={{ title: "Top 5" }}
+          options={{ title: "Top 5", headerShown: false }}
         />
         <Tab.Screen
-          name="search"
+          name="searchstack"
           component={SearchStack}
-          options={{ title: "Buscar" }}
+          options={{ title: "Buscar", headerShown: false }}
         />
         <Tab.Screen
-          name="account"
+          name="accountstack"
           component={AccountStack}
-          options={{ title: "Cuenta" }}
+          options={{ title: "Cuenta", headerShown: false }}
         />
       </Tab.Navigator>
     </NavigationContainer>
@@ -59,19 +57,19 @@ function screenOptions(route, color) {
   let iconName;
 
   switch (route.name) {
-    case "restaurants":
+    case "restaurantsstack":
       iconName = "compass-outline";
       break;
-    case "favorites":
+    case "favoritesstack":
       iconName = "heart-outline";
       break;
-    case "top-restaurants":
+    case "top-restaurantsstack":
       iconName = "star-outline";
       break;
-    case "search":
+    case "searchstack":
       iconName = "magnify";
       break;
-    case "account":
+    case "accountstack":
       iconName = "home-outline";
       break;
     default:
