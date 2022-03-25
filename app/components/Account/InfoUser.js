@@ -37,14 +37,20 @@ export default function InfoUser(props) {
             toastRef.current.show("Error al actualizar el avatar");
           });
       }
-      console.log(result);
     }
   };
 
   const uploadImage = async (uri) => {
-    const docuRef = doc(firestore, `avatar/${uid}`);
-    const consulta = await getDoc(docuRef);
-    if (consulta.exists()) {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    //const ref = firebaseApp.firestore().ref().child(`avatar/${uid}`);
+    //return ref.put(blob);
+
+    console.log(JSON.stringify(blob));
+    console.log(uid);
+
+    //const ref =  doc(firestore, `avatar/${uid}`);
+    /*if (consulta.exists()) {
       const infoDocu = consulta.data();
       return infoDocu.Avatar;
     } else {
@@ -52,7 +58,7 @@ export default function InfoUser(props) {
       const consulta = await getDoc(docuRef);
       const infoDocu = consulta.data();
       return infoDocu.Avatar;
-    }
+    }*/
   };
 
   return (
