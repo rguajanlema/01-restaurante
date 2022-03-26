@@ -1,9 +1,14 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { Button, Input } from "react-native-elements";
 
 export default function ChangeDisplayNameForm(props) {
   const { displayName, setShowModal, toastRef } = props;
+  const [newDisplayName, setNewDisplayName] = useState(null);
+
+  const onSubmit = () => {
+    console.log(newDisplayName);
+  };
 
   return (
     <View style={styles.view}>
@@ -16,11 +21,13 @@ export default function ChangeDisplayNameForm(props) {
           color: "#c2c2c2",
         }}
         defaultValue={displayName || ""}
+        onChange={(e) => setNewDisplayName(e.nativeEvent.text)}
       />
       <Button
         title="Cambiar nombre"
         containerStyle={styles.btnContainer}
         buttonStyle={styles.btn}
+        onPress={onSubmit}
       />
     </View>
   );
