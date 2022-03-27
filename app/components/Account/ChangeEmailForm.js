@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { validateEmail } from "../../utils/validations";
+import { reauthenticate } from "../../utils/api";
 
 export default function ChangeEmailForm(props) {
   const { email, setShowModal, toastRef, setRealoaduserInfo } = props;
@@ -22,12 +23,18 @@ export default function ChangeEmailForm(props) {
       setErrors({
         email: "Email incorrecto",
       });
-    } else if (!form.password) {
+    } else if (!formData.password) {
       setErrors({
         password: "La contrasenia no puede estar vacia.",
       });
     } else {
-      console.log("Ok");
+      reauthenticate(formData.password)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(() => {
+          setErrors({ password: "La contasenia no es correcta." });
+        });
     }
   };
 
