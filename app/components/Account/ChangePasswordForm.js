@@ -1,41 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Button } from "react-native-elements";
 
 export default function ChangePasswordForm() {
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <View>
       <Input
         placeholder="Contrasena actual"
         containerStyle={styles.input}
         password={true}
-        secureTextEntry={true}
+        secureTextEntry={showPassword ? false : true}
         rightIcon={{
           type: "material-community",
-          name: "eye-outline",
+          name: showPassword ? "eye-off-outline" : "eye-outline",
           color: "#c2c2c2",
+          onPress: () => setShowPassword(!showPassword),
         }}
       />
       <Input
         placeholder="Nueva contrasena"
         containerStyle={styles.input}
         password={true}
-        secureTextEntry={true}
+        secureTextEntry={showPassword ? false : true}
         rightIcon={{
           type: "material-community",
-          name: "eye-outline",
+          name: showPassword ? "eye-off-outline" : "eye-outline",
           color: "#c2c2c2",
+          onPress: () => setShowPassword(!showPassword),
         }}
       />
       <Input
         placeholder="Repetir nueva contrasena"
         containerStyle={styles.input}
         password={true}
-        secureTextEntry={true}
+        secureTextEntry={showPassword ? false : true}
         rightIcon={{
           type: "material-community",
-          name: "eye-outline",
+          name: showPassword ? "eye-off-outline" : "eye-outline",
           color: "#c2c2c2",
+          onPress: () => setShowPassword(!showPassword),
         }}
       />
       <Button
