@@ -4,6 +4,16 @@ import { Input, Button } from "react-native-elements";
 
 export default function ChangePasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState(defaultValue());
+
+  const onChange = (e, type) => {
+    setFormData({ ...formData, [type]: e.nativeEvent.text });
+  };
+
+  const onSubmit = () => {
+    console.log(formData);
+  };
+
   return (
     <View>
       <Input
@@ -17,6 +27,7 @@ export default function ChangePasswordForm() {
           color: "#c2c2c2",
           onPress: () => setShowPassword(!showPassword),
         }}
+        onChange={(e) => onChange(e, "password")}
       />
       <Input
         placeholder="Nueva contrasena"
@@ -29,6 +40,7 @@ export default function ChangePasswordForm() {
           color: "#c2c2c2",
           onPress: () => setShowPassword(!showPassword),
         }}
+        onChange={(e) => onChange(e, "newPassword")}
       />
       <Input
         placeholder="Repetir nueva contrasena"
@@ -41,14 +53,24 @@ export default function ChangePasswordForm() {
           color: "#c2c2c2",
           onPress: () => setShowPassword(!showPassword),
         }}
+        onChange={(e) => onChange(e, "repeatNewPassword")}
       />
       <Button
         title="Cambiar contrasenia"
         containerStyle={styles.btnContainer}
         buttonStyle={styles.btn}
+        onPress={onSubmit}
       />
     </View>
   );
+}
+
+function defaultValue() {
+  return {
+    password: "",
+    newPassword: "",
+    repeatNewPassword: "",
+  };
 }
 
 const styles = StyleSheet.create({
