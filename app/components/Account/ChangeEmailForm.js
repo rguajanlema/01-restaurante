@@ -3,12 +3,16 @@ import { StyleSheet, View } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { validateEmail } from "../../utils/validations";
 import { reauthenticate } from "../../utils/api";
+import { getAuth, updateEmail } from "firebase/auth";
+
+const auth = getAuth();
 
 export default function ChangeEmailForm(props) {
-  const { email, setShowModal, toastRef, setRealoaduserInfo } = props;
+  const { email, setShowModal, toastRef, setRealoadUserInfo } = props;
   const [formData, setFormData] = useState(defaultValue());
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (e, type) => {
     setFormData({ ...formData, [type]: e.nativeEvent.text });
@@ -28,11 +32,23 @@ export default function ChangeEmailForm(props) {
         password: "La contrasenia no puede estar vacia.",
       });
     } else {
+      setIsLoading(true);
       reauthenticate(formData.password)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
+          updateEmail(auth.currentUser, formData.email)
+            .then(() => {
+              setIsLoading(false);
+              setRealoadUserInfo(true);
+              toastRef.currentUser.show("Email actualizado correctamente");
+              setShowModal(false);
+            })
+            .catch(() => {
+              setErrors({ email: "Error al actualizar el email." });
+              setIsLoading(false);
+            });
         })
         .catch(() => {
+          setIsLoading(false);
           setErrors({ password: "La contasenia no es correcta." });
         });
     }
@@ -71,6 +87,7 @@ export default function ChangeEmailForm(props) {
         containerStyle={styles.btnContainer}
         buttonStyle={styles.btn}
         onPress={onSubmit}
+        loading={isLoading}
       />
     </View>
   );
