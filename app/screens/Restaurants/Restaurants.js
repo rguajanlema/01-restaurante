@@ -1,18 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Icon } from "react-native-elements";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+const auth = getAuth();
 
 export default function Restaurants() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (userInfo) => {
+      setUser(userInfo);
+    });
+  }, []);
+
   return (
     <View style={styles.viewBody}>
       <Text>Restaurants</Text>
-      <Icon
-        reverse
-        type="material-community"
-        name="plus"
-        color="#00a680"
-        containerStyle={styles.btnContainer}
-      />
+
+      {user && (
+        <Icon
+          reverse
+          type="material-community"
+          name="plus"
+          color="#00a680"
+          containerStyle={styles.btnContainer}
+        />
+      )}
     </View>
   );
 }
