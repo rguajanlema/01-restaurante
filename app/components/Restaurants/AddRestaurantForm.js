@@ -8,13 +8,17 @@ import {
   Dimensions,
 } from "react-native";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 
 export default function AddRestaurantForm(props) {
   const { toastRef, setIsLoading, navigation } = props;
   const [restaurantName, setRestaurantName] = useState("");
   const [restaurantAddress, setRestaurantAddress] = useState("");
   const [restaurantDescription, setRestaurantDescription] = useState("");
+  const [imagesSelected, setImagesSelected] = useState([]);
 
+  console.log(imagesSelected);
   const addRestaurant = () => {
     console.log(restaurantName);
     console.log(restaurantAddress);
@@ -28,7 +32,11 @@ export default function AddRestaurantForm(props) {
         setRestaurantAddress={setRestaurantAddress}
         setRestaurantDescription={setRestaurantDescription}
       />
-      <UploadImage />
+      <UploadImage
+        toastRef={toastRef}
+        imageSelect={imagesSelected}
+        setImagesSelected={setImagesSelected}
+      />
       <Button
         title="Crear Restaurante"
         onPress={addRestaurant}
@@ -64,9 +72,31 @@ function FormAdd(props) {
   );
 }
 
-function UploadImage() {
-  const imageSelect = () => {
-    console.log("Imagenes...");
+function UploadImage(props) {
+  const { toastRef, imagesSelect, setImagesSelected } = props;
+  const imageSelect = async () => {
+    const resultPermissions = await Permissions.askAsync(Permissions.CAMERA);
+
+    if (resultPermissions === "denied") {
+      toastRef.current.show(
+        "Es necesario aceptar los permisos de la galeria, si los haz rechazado tienes que ir ha activarlos manualmente",
+        3000
+      );
+    } else {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+
+      if (result.cancelled) {
+        toastRef.current.show(
+          "Has cerrado la galeria sin seleccionar ninguna imagen",
+          2000
+        );
+      } else {
+        setImagesSelected([...imagesSelect, result.uri]);
+      }
+    }
   };
   return (
     <View style={styles.viewImagenes}>
