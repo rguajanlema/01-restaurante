@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
+import { map, size } from "lodash";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
@@ -18,11 +19,9 @@ export default function AddRestaurantForm(props) {
   const [restaurantDescription, setRestaurantDescription] = useState("");
   const [imagesSelected, setImagesSelected] = useState([]);
 
-  console.log(imagesSelected);
   const addRestaurant = () => {
-    console.log(restaurantName);
-    console.log(restaurantAddress);
-    console.log(restaurantDescription);
+    console.log("OK");
+    console.log(imagesSelected);
   };
 
   return (
@@ -73,7 +72,7 @@ function FormAdd(props) {
 }
 
 function UploadImage(props) {
-  const { toastRef, imagesSelect, setImagesSelected } = props;
+  const { toastRef, imagesSelected, setImagesSelected } = props;
   const imageSelect = async () => {
     const resultPermissions = await Permissions.askAsync(Permissions.CAMERA);
 
@@ -94,19 +93,28 @@ function UploadImage(props) {
           2000
         );
       } else {
-        setImagesSelected([...imagesSelect, result.uri]);
+        setImagesSelected([...imagesSelected, result.uri]);
       }
     }
   };
   return (
     <View style={styles.viewImagenes}>
-      <Icon
-        type="material-community"
-        name="camera"
-        color="#a7a7a7"
-        containerStyle={styles.containerIcon}
-        onPress={imageSelect}
-      />
+      {size(imagesSelected) < 5 && (
+        <Icon
+          type="material-community"
+          name="camera"
+          color="#a7a7a7"
+          containerStyle={styles.containerIcon}
+          onPress={imageSelect}
+        />
+      )}
+      {map(imagesSelected, (imageRestaurant, index) => (
+        <Avatar
+          key={index}
+          style={styles.miniatureStyle}
+          source={{ uri: imageRestaurant }}
+        />
+      ))}
     </View>
   );
 }
@@ -144,5 +152,10 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70,
     backgroundColor: "#e3e3e3",
+  },
+  miniatureStyle: {
+    width: 70,
+    height: 70,
+    marginRight: 10,
   },
 });
