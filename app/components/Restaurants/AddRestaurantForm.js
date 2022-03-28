@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
 import { map, size } from "lodash";
-import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import { Camera } from "expo-camera";
 
 export default function AddRestaurantForm(props) {
   const { toastRef, setIsLoading, navigation } = props;
@@ -25,7 +25,7 @@ export default function AddRestaurantForm(props) {
   };
 
   return (
-    <View style={styles.scrollView}>
+    <ScrollView style={styles.scrollView}>
       <FormAdd
         setRestaurantName={setRestaurantName}
         setRestaurantAddress={setRestaurantAddress}
@@ -33,7 +33,7 @@ export default function AddRestaurantForm(props) {
       />
       <UploadImage
         toastRef={toastRef}
-        imageSelect={imagesSelected}
+        imagesSelected={imagesSelected}
         setImagesSelected={setImagesSelected}
       />
       <Button
@@ -41,7 +41,7 @@ export default function AddRestaurantForm(props) {
         onPress={addRestaurant}
         buttonStyle={styles.btnAddRestaurant}
       />
-    </View>
+    </ScrollView>
   );
 }
 
@@ -74,7 +74,7 @@ function FormAdd(props) {
 function UploadImage(props) {
   const { toastRef, imagesSelected, setImagesSelected } = props;
   const imageSelect = async () => {
-    const resultPermissions = await Permissions.askAsync(Permissions.CAMERA);
+    const resultPermissions = await Camera.requestCameraPermissionsAsync();
 
     if (resultPermissions === "denied") {
       toastRef.current.show(
