@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -10,6 +10,8 @@ import {
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
 import { map, size, filter } from "lodash";
 import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
 import Modal from "../Modal";
 
@@ -24,8 +26,13 @@ export default function AddRestaurantForm(props) {
   const [isVisibleMap, setIsVisibleMap] = useState(false);
 
   const addRestaurant = () => {
-    console.log("OK");
-    console.log(imagesSelected);
+    if (!restaurantName || !restaurantAddress || !restaurantDescription) {
+      toastRef.current.show("Todos los campos del formulario son obligatorio");
+    } else if (size(imagesSelected) === 0) {
+      toastRef.current.show("El resataurante tiene que tener almenos una foto");
+    } else {
+      console.log("OK");
+    }
   };
 
   return (
@@ -108,6 +115,12 @@ function FormAdd(props) {
 function Map(props) {
   const { isVisibleMap, setIsVisibleMap } = props;
 
+  useEffect(() => {
+    (async () => {
+      const resultPermissions = Permissions.askAsync(Permissions.LOCATION);
+      console.log(resultPermissions);
+    })();
+  }, []);
   return (
     <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
       <Text>Map</Text>
