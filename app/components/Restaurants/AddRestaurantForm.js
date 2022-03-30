@@ -114,16 +114,9 @@ function FormAdd(props) {
 
 function Map(props) {
   const { isVisibleMap, setIsVisibleMap } = props;
-
-  useEffect(() => {
-    (async () => {
-      const resultPermissions = Permissions.askAsync(Permissions.LOCATION);
-      console.log(resultPermissions);
-    })();
-  }, []);
   return (
     <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
-      <Text>Map</Text>
+      <Text>Mapa</Text>
     </Modal>
   );
 }
