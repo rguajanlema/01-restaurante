@@ -16,7 +16,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="restaurants"
+        initialRouteName="restaurantsstack"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color }) => screenOptions(route, color),
           tabBarInactiveTintColor: "#646464",

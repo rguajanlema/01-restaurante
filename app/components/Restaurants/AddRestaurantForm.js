@@ -14,11 +14,11 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
 import Modal from "../Modal";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import uuid from "random-uuid-v4";
+import firebaseApp from "../../utils/firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, getFirestore, addDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import firebaseApp from "../../utils/firebase";
 
 const widthScreen = Dimensions.get("window").width;
 
@@ -55,7 +55,7 @@ export default function AddRestaurantForm(props) {
         })
           .then(() => {
             setIsLoading(false);
-            navigation.navigate("restaurantsstack");
+            navigation.navigate("restaurantes");
           })
           .catch(() => {
             setIsLoading(false);
@@ -182,7 +182,7 @@ function Map(props) {
       );
 
       const statusPermissions = resultPermissions.permissions;
-      console.log(statusPermissions);
+
       if (statusPermissions !== "granted") {
         toastRef.current.show(
           "Tienes que aceptar los permisos de localizacion para crear un restaurante",

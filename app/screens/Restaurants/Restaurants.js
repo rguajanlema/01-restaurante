@@ -8,6 +8,7 @@ const auth = getAuth();
 export default function Restaurants(props) {
   const { navigation } = props;
   const [user, setUser] = useState(null);
+  console.log(props);
 
   useEffect(() => {
     onAuthStateChanged(auth, (userInfo) => {
