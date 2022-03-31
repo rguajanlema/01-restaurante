@@ -55,7 +55,7 @@ export default function AddRestaurantForm(props) {
         })
           .then(() => {
             setIsLoading(false);
-            console.log("OK");
+            navigation.navigate("restaurantsstack");
           })
           .catch(() => {
             setIsLoading(false);
