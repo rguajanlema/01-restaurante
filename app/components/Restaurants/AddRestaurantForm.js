@@ -16,8 +16,14 @@ import { Camera } from "expo-camera";
 import Modal from "../Modal";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import uuid from "random-uuid-v4";
+import { collection, getFirestore, addDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import firebaseApp from "../../utils/firebase";
 
 const widthScreen = Dimensions.get("window").width;
+
+const db = getFirestore(firebaseApp);
+const auth = getAuth();
 
 export default function AddRestaurantForm(props) {
   const { toastRef, setIsLoading, navigation } = props;
@@ -34,9 +40,29 @@ export default function AddRestaurantForm(props) {
       toastRef.current.show("El resataurante tiene que tener almenos una foto");
     } else {
       setIsLoading(true);
+
       uploadImageStore().then((response) => {
-        console.log(response);
-        setIsLoading(false);
+        addDoc(collection(db, "restaurants"), {
+          name: restaurantName,
+          address: restaurantAddress,
+          description: restaurantDescription,
+          images: response,
+          rating: 0,
+          ratingTotal: 0,
+          quantityVoting: 0,
+          createAt: new Date(),
+          createBy: auth.currentUser.uid,
+        })
+          .then(() => {
+            setIsLoading(false);
+            console.log("OK");
+          })
+          .catch(() => {
+            setIsLoading(false);
+            toastRef.current.show(
+              "Error al subir el restaurante, intentelo mas tarde"
+            );
+          });
       });
     }
   };
@@ -84,7 +110,11 @@ export default function AddRestaurantForm(props) {
         onPress={addRestaurant}
         buttonStyle={styles.btnAddRestaurant}
       />
-      <Map isVisibleMap={isVisibleMap} setIsVisibleMap={setIsVisibleMap} />
+      <Map
+        isVisibleMap={isVisibleMap}
+        setIsVisibleMap={setIsVisibleMap}
+        toastRef={toastRef}
+      />
     </ScrollView>
   );
 }
@@ -143,7 +173,27 @@ function FormAdd(props) {
 }
 
 function Map(props) {
-  const { isVisibleMap, setIsVisibleMap } = props;
+  const { isVisibleMap, setIsVisibleMap, toastRef } = props;
+
+  useEffect(() => {
+    (async () => {
+      const resultPermissions = await Permissions.askAsync(
+        Permissions.LOCATION_BACKGROUND
+      );
+
+      const statusPermissions = resultPermissions.permissions;
+      console.log(statusPermissions);
+      if (statusPermissions !== "granted") {
+        toastRef.current.show(
+          "Tienes que aceptar los permisos de localizacion para crear un restaurante",
+          3000
+        );
+      } else {
+        const loc = await Location.getCurrentPositionAsync({});
+        console.log(loc);
+      }
+    })();
+  }, []);
   return (
     <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
       <Text>Mapa</Text>
