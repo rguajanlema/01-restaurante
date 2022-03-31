@@ -8,12 +8,14 @@ import {
   Dimensions,
 } from "react-native";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
-import { map, size, filter } from "lodash";
+import { map, size, filter, result } from "lodash";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
 import Modal from "../Modal";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import uuid from "random-uuid-v4";
 
 const widthScreen = Dimensions.get("window").width;
 
@@ -31,8 +33,36 @@ export default function AddRestaurantForm(props) {
     } else if (size(imagesSelected) === 0) {
       toastRef.current.show("El resataurante tiene que tener almenos una foto");
     } else {
-      console.log("OK");
+      setIsLoading(true);
+      uploadImageStore().then((response) => {
+        console.log(response);
+        setIsLoading(false);
+      });
     }
+  };
+
+  const uploadImageStore = async () => {
+    const imageBlob = [];
+
+    await Promise.all(
+      map(imagesSelected, async (image) => {
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const storage = getStorage();
+        const storageRef = ref(storage, "restaurants/" + uuid());
+
+        await uploadBytes(storageRef, blob).then((result) => {
+          getDownloadURL(ref(storage, `restaurants/${result.metadata.name}`))
+            .then((photoUrl) => {
+              imageBlob.push(photoUrl);
+            })
+            .catch((error) => {
+              console.log("Error");
+            });
+        });
+      })
+    );
+    return imageBlob;
   };
 
   return (
