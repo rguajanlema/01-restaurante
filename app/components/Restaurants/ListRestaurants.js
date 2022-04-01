@@ -32,11 +32,37 @@ export default function limitRestaurants(props) {
 
 function Restaurant(props) {
   const { restaurant } = props;
+  const { images, name, address, description } = restaurant.item;
+  const imageRestaurant = images[0];
+
+  const goRestaurant = () => {
+    console.log("Ok");
+  };
 
   return (
-    <View>
-      <Text>Restaurante</Text>
-    </View>
+    <TouchableOpacity onPress={goRestaurant}>
+      <View style={styles.viewRestaurant}>
+        <View style={styles.viewRestaurantImage}>
+          <Image
+            resizeMode="cover"
+            PlaceholderContent={<ActivityIndicator color="fff" />}
+            source={
+              imageRestaurant
+                ? { uri: imageRestaurant }
+                : require("../../../assets/img/no-image.png")
+            }
+            style={styles.imageRestaurant}
+          />
+        </View>
+        <View>
+          <Text style={styles.restaurantName}>{name}</Text>
+          <Text style={styles.restaurantAddress}>{address}</Text>
+          <Text style={styles.restaurantDescription}>
+            {description.substr(0, 60)}...
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 
@@ -45,5 +71,28 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     alignItems: "center",
+  },
+  viewRestaurant: {
+    flexDirection: "row",
+    margin: 10,
+  },
+  viewRestaurantImage: {
+    marginRight: 15,
+  },
+  imageRestaurant: {
+    width: 80,
+    height: 80,
+  },
+  restaurantName: {
+    fontWeight: "bold",
+  },
+  restaurantAddress: {
+    paddingTop: 2,
+    color: "grey",
+  },
+  restaurantDescription: {
+    paddingTop: 2,
+    color: "grey",
+    width: 300,
   },
 });
