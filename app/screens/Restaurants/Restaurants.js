@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Icon } from "react-native-elements";
+import { useFocusEffect } from "@react-navigation/native";
 import { firebaseApp } from "../../utils/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
@@ -36,15 +37,17 @@ export default function Restaurants(props) {
     });
   }, []);
 
-  useEffect(() => {
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [])
+  );
+
+  const loadData = async () => {
     getDocs(collection(db, "restaurants")).then((snap) => {
       setTotalRestaurants(snap.size);
     });
 
-    getAllCollection();
-  }, []);
-
-  const getAllCollection = async () => {
     const resultRestaurants = [];
 
     const firstQuery = query(
