@@ -73,7 +73,7 @@ export default function Restaurants(props) {
     const firstQuery = query(
       collection(db, "restaurants"),
       orderBy("createAt", "desc"),
-      startAfter(startRestaurants.data()),
+      startAfter(startRestaurants.data().createAt),
       limit(limitRestaurants)
     );
 
@@ -96,7 +96,11 @@ export default function Restaurants(props) {
 
   return (
     <View style={styles.viewBody}>
-      <ListRestaurants restaurants={restaurants} />
+      <ListRestaurants
+        restaurants={restaurants}
+        handleLoadMore={handleLoadMore}
+        isLoading={isLoading}
+      />
 
       {user && (
         <Icon
