@@ -22,8 +22,9 @@ export default function Restaurants(props) {
   const [user, setUser] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
   const [totalRestaurants, setTotalRestaurants] = useState(0);
-  const limiteRestaurants = 10;
-  console.log(totalRestaurants);
+  const [startRestaurants, setStartRestaurants] = useState(null);
+  const limitRestaurants = 10;
+  console.log(restaurants);
 
   useEffect(() => {
     onAuthStateChanged(auth, (userInfo) => {
@@ -36,19 +37,30 @@ export default function Restaurants(props) {
       setTotalRestaurants(snap.size);
     });
 
+    getAllCollection();
+  }, []);
+
+  const getAllCollection = async () => {
     const resultRestaurants = [];
 
-    getDocs(collection(db, "restaurants")).then((response) => {
-      /*query(
-        response,
-        orderBy("createAt", "desc"),
-        limit(totalRestaurants)
-      ).then((info) => {
-        console.log(info.doc);
-      });*/
-      console.log(response.docs);
+    const firstQuery = query(
+      collection(db, "restaurants"),
+      orderBy("createAt"),
+      limit(limitRestaurants)
+    );
+
+    const response = await getDocs(firstQuery);
+
+    setStartRestaurants(response.docs[response.docs.length - 1]);
+
+    response.forEach((doc) => {
+      const restaurant = doc.data();
+      restaurant.id = doc.id;
+      resultRestaurants.push(restaurant);
     });
-  }, []);
+
+    setRestaurants(resultRestaurants);
+  };
 
   return (
     <View style={styles.viewBody}>
