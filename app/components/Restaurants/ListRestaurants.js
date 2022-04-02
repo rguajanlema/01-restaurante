@@ -40,14 +40,11 @@ export default function limitRestaurants(props) {
 
 function Restaurant(props) {
   const { restaurant, navigation } = props;
-  const { images, name, address, description } = restaurant.item;
-  const imageRestaurant = images[0];
+  const { id, images, name, address, description } = restaurant.item;
+  const imageRestaurant = images ? images[0] : null;
 
   const goRestaurant = () => {
-    navigation.navigate("restaurant", {
-      id,
-      name,
-    });
+    navigation.navigate("restaurant", { id, name });
   };
 
   return (

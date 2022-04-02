@@ -17,7 +17,6 @@ import {
 } from "firebase/firestore";
 
 import ListRestaurants from "../../components/Restaurants/ListRestaurants";
-import { async } from "@firebase/util";
 
 const auth = getAuth();
 const db = getFirestore(firebaseApp);
