@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import Loading from "../../components/Loading";
 
 import { firebaseApp } from "../../utils/firebase";
 import { getFirestore, getDoc, doc } from "firebase/firestore";
@@ -21,6 +22,8 @@ export default function Restaurant(props) {
       setRestaurant(data);
     });
   }, []);
+
+  if (!restaurant) return <Loading isVisible={true} text="Cargando..." />;
 
   return (
     <View>
