@@ -5,8 +5,16 @@ import Toast from "react-native-easy-toast";
 import Loading from "../../components/Loading";
 
 import firebaseApp from "../../utils/firebase";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  updateDoc,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { async } from "@firebase/util";
 
 const auth = getAuth();
 const db = getFirestore(firebaseApp);
@@ -42,14 +50,35 @@ export default function AddReviewRestaurant(props) {
 
       addDoc(collection(db, "reviews"), paylod)
         .then(() => {
-          setIsLoading(false);
+          updateRestaurant();
         })
         .catch(() => {
           toastRef.current.show("Error al enviar la review");
-          setIsLoading(true);
+          setIsLoading(false);
         });
     }
   };
+
+  const updateRestaurant = async () => {
+    const restaurantDoc = doc(db, "restaurants", idRestaurant);
+
+    getDoc(restaurantDoc).then((restaurantRef) => {
+      const restaurantData = restaurantRef.data();
+      const ratingTotal = restaurantData.ratingTotal + rating;
+      const quantityVoting = restaurantData.quantityVoting + 1;
+      const ratingResult = ratingTotal / quantityVoting;
+
+      updateDoc(restaurantDoc, {
+        rating: ratingResult,
+        ratingTotal: ratingTotal,
+        quantityVoting: quantityVoting,
+      }).then(() => {
+        setIsLoading(false);
+        navigation.goBack();
+      });
+    });
+  };
+
   return (
     <View style={styles.viewBody}>
       <View style={styles.viewRating}>
