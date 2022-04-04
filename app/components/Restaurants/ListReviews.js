@@ -10,7 +10,7 @@ const auth = getAuth();
 const db = getFirestore(firebaseApp);
 
 export default function ListReviews(props) {
-  const { navigation, Restaurant, setRating } = props;
+  const { navigation, idRestaurant, setRating } = props;
   const [userLogged, setUserLoged] = useState(false);
   onAuthStateChanged(auth, (user) => {
     user ? setUserLoged(true) : setUserLoged(false);
@@ -28,6 +28,11 @@ export default function ListReviews(props) {
             name: "square-edit-outline",
             color: "#00a680",
           }}
+          onPress={() =>
+            navigation.navigate("add-review-restaurant", {
+              idRestaurant: idRestaurant,
+            })
+          }
         />
       ) : (
         <View>
