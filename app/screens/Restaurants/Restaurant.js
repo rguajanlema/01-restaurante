@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, Dimensions } from "react-native";
-import { Rating } from "react-native-elements";
+import { map } from "lodash";
+import { Rating, ListItem, Icon } from "react-native-elements";
 import Loading from "../../components/Loading";
 import Carousel from "../../components/Carousel";
 
@@ -41,6 +42,11 @@ export default function Restaurant(props) {
         description={restaurant.description}
         rating={rating}
       />
+      <RestaurantInfo
+        location={restaurant.location}
+        name={restaurant.name}
+        address={restaurant.address}
+      />
     </ScrollView>
   );
 }
@@ -64,6 +70,46 @@ function TitleRestaurant(props) {
   );
 }
 
+function RestaurantInfo(props) {
+  const { location, name, address } = props;
+  console.log(address);
+  const listInfo = [
+    {
+      text: address,
+      iconName: "map-marker",
+      iconType: "material-community",
+      action: null,
+    },
+    {
+      text: "111 222 333",
+      iconName: "phone",
+      iconType: "material-community",
+      action: null,
+    },
+  ];
+
+  return (
+    <View style={styles.viewRestaurantInfo}>
+      <Text style={styles.restaurantInfoTitle}>
+        Informacion sobre el restaurante
+      </Text>
+
+      {map(listInfo, (item, index) => (
+        <ListItem
+          key={index}
+          title={item.text}
+          leftIcon={{
+            name: item.iconName,
+            type: item.iconType,
+            color: "#00a680",
+          }}
+          containerStyle={styles.containerListItem}
+        />
+      ))}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   viewBody: {
     flex: 1,
@@ -83,5 +129,18 @@ const styles = StyleSheet.create({
   rating: {
     position: "absolute",
     right: 0,
+  },
+  viewRestaurantInfo: {
+    margin: 15,
+    marginTop: 25,
+  },
+  restaurantInfoTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  containerListItem: {
+    borderBottomColor: "#b8b8b8",
+    borderBottomWidth: 1,
   },
 });
