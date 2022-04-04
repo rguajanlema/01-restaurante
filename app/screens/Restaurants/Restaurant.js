@@ -72,7 +72,7 @@ function TitleRestaurant(props) {
 
 function RestaurantInfo(props) {
   const { location, name, address } = props;
-  console.log(address);
+
   const listInfo = [
     {
       text: address,
@@ -86,6 +86,12 @@ function RestaurantInfo(props) {
       iconType: "material-community",
       action: null,
     },
+    {
+      text: "roberto@desing.com",
+      iconName: "at",
+      iconType: "material-community",
+      action: null,
+    },
   ];
 
   return (
@@ -95,16 +101,12 @@ function RestaurantInfo(props) {
       </Text>
 
       {map(listInfo, (item, index) => (
-        <ListItem
-          key={index}
-          title={item.text}
-          leftIcon={{
-            name: item.iconName,
-            type: item.iconType,
-            color: "#00a680",
-          }}
-          containerStyle={styles.containerListItem}
-        />
+        <ListItem key={index} buttomDivider>
+          <Icon name={item.iconName} type={item.iconType} color="#00a680" />
+          <ListItem.Content>
+            <ListItem.Title>{item.text}</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
       ))}
     </View>
   );
