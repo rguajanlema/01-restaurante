@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { Image, Icon, Botton, Button } from "react-native-elements";
+import { Image, Icon, Button } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "../components/Loading";
 
@@ -20,6 +20,7 @@ import {
   getFirestore,
   query,
   where,
+  deleteDoc,
   getDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -129,7 +130,49 @@ function UserNoLogged(props) {
 
 function Restaurant(props) {
   const { restaurant } = props;
-  const { name, images } = restaurant.item;
+  const { id, name, images } = restaurant.item;
+
+  const confirmRemoveFavorite = () => {
+    Alert.alert(
+      "Eliminar Restaurante de Favoritos",
+      "Estas seguro de que quieres eliminar el restaurante de favoritos?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Eliminar",
+          onPress: removeFavorite,
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const removeFavorite = () => {
+    const favoriteRef = collection(db, "favorites");
+
+    getDocs(
+      query(
+        favoriteRef,
+        where("idRestaurant", "==", id),
+        where("idUser", "==", auth.currentUser.uid)
+      )
+    ).then((querySnapshot) => {
+      querySnapshot.forEach((response) => {
+        const idFavorite = response.id;
+
+        deleteDoc(doc(db, "favorites", idFavorite))
+          .then(() => {
+            console.log("Eliminado");
+          })
+          .catch(() => {
+            console.log("ERROR");
+          });
+      });
+    });
+  };
 
   return (
     <View style={styles.restaurant}>
@@ -151,7 +194,7 @@ function Restaurant(props) {
             name="heart"
             color="#f00"
             containerStyle={styles.favorite}
-            onPress={() => console.log("Remover")}
+            onPress={confirmRemoveFavorite}
             underlayColor="transparent"
           />
         </View>
