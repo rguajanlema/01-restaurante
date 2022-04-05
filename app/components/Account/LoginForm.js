@@ -4,7 +4,11 @@ import { Input, Icon, Button } from "react-native-elements";
 import { isEmpty } from "lodash";
 import { useNavigation } from "@react-navigation/native";
 import { validateEmail } from "../../utils/validations";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import Loading from "../Loading";
 
 const auth = getAuth();
@@ -15,6 +19,10 @@ export default function LoginForm(props) {
   const [formData, setFormData] = useState(defaultFormValue());
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
+  onAuthStateChanged(auth, (user) => {
+    user && navigation.navigate("account");
+  });
 
   const onChange = (e, type) => {
     setFormData({ ...formData, [type]: e.nativeEvent.text });
@@ -29,7 +37,7 @@ export default function LoginForm(props) {
       signInWithEmailAndPassword(auth, formData.email, formData.password)
         .then(() => {
           setLoading(false);
-          navigation.navigate("account");
+          navigation.goBack();
         })
         .catch(() => {
           setLoading(false);
