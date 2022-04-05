@@ -12,9 +12,12 @@ import { firebaseApp } from "../../utils/firebase";
 import {
   getFirestore,
   getDoc,
+  getDocs,
+  query,
   doc,
   collection,
   addDoc,
+  where,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -48,6 +51,22 @@ export default function Restaurant(props) {
     }, [])
   );
 
+  useEffect(() => {
+    if (userLogged && restaurant) {
+      getDocs(
+        query(
+          collection(db, "favorites"),
+          where("idRestaurant", "==", restaurant.id),
+          where("idUser", "==", auth.currentUser.uid)
+        )
+      ).then((response) => {
+        if (response.docs.length === 1) {
+          setIsFavorite(true);
+        }
+      });
+    }
+  }, [userLogged, restaurant]);
+
   const addFavorite = () => {
     if (!userLogged) {
       toastRef.current.show(
@@ -80,7 +99,7 @@ export default function Restaurant(props) {
       <View style={styles.viewFavorite}>
         <Icon
           type="material-community"
-          name={isFavorite ? "heart" : "heart-ouline"}
+          name="heart"
           onPress={isFavorite ? removeFavorite : addFavorite}
           color={isFavorite ? "#f00" : "#000"}
           size={35}
