@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { StyleSheet, Text, View, ScrollView, Dimensions } from "react-native";
 import { map } from "lodash";
+import Toast from "react-native-easy-toast";
 import { Rating, ListItem, Icon } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "../../components/Loading";
@@ -9,17 +10,26 @@ import ListReviews from "../../components/Restaurants/ListReviews";
 
 import { firebaseApp } from "../../utils/firebase";
 import { getFirestore, getDoc, doc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
 const screenWidth = Dimensions.get("window").width;
+const auth = getAuth(firebaseApp);
 
 export default function Restaurant(props) {
   const { navigation, route } = props;
   const { id, name } = route.params;
   const [restaurant, setRestaurant] = useState(null);
   const [rating, setRating] = useState(0);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [userLogged, setUserLogged] = useState(false);
+  const toastRef = useRef();
 
   navigation.setOptions({ title: name });
+
+  onAuthStateChanged(auth, (user) => {
+    user ? setUserLogged(true) : setUserLogged(false);
+  });
 
   useFocusEffect(
     useCallback(() => {
@@ -32,6 +42,14 @@ export default function Restaurant(props) {
     }, [])
   );
 
+  const addFavorite = () => {
+    console.log("Anadir a favoritos");
+  };
+
+  const removeFavorite = () => {
+    console.log("Quitar de favorito");
+  };
+
   if (!restaurant) return <Loading isVisible={true} text="Cargando..." />;
 
   return (
@@ -39,9 +57,9 @@ export default function Restaurant(props) {
       <View style={styles.viewFavorite}>
         <Icon
           type="material-community"
-          name="heart"
-          onPress={() => console.log("Add favorites")}
-          color="#000"
+          name={isFavorite ? "heart" : "heart-ouline"}
+          onPress={isFavorite ? removeFavorite : addFavorite}
+          color={isFavorite ? "#f00" : "#000"}
           size={35}
           underlayColor="transparent"
         />
@@ -62,6 +80,7 @@ export default function Restaurant(props) {
         address={restaurant.address}
       />
       <ListReviews navigation={navigation} idRestaurant={restaurant.id} />
+      <Toast ref={toastRef} position="center" opocity={0.9} />
     </ScrollView>
   );
 }
