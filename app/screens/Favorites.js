@@ -11,7 +11,6 @@ import {
 import { Image, Icon, Botton, Button } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "../components/Loading";
-import { size } from "lodash";
 
 import { firebaseApp } from "../utils/firebase";
 import {
@@ -76,15 +75,24 @@ export default function Favorites(props) {
     return <UserNoLogged navigation={navigation} />;
   }
 
-  if (!restaurants) {
-    return <Loading isVisible={true} text="Cargando..." />;
-  } else if (size(restaurants) === 0) {
+  if (restaurants?.length === 0) {
     return <NotFoundRestaurants />;
   }
 
   return (
-    <View>
-      <Text>Favorites</Text>
+    <View style={styles.viewBody}>
+      {restaurants ? (
+        <FlatList
+          data={restaurants}
+          renderItem={(restaurant) => <Restaurant restaurant={restaurant} />}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : (
+        <View style={styles.loaderRestaurants}>
+          <ActivityIndicator size="large" />
+          <Text>Cargando restaurantes</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -118,3 +126,25 @@ function UserNoLogged(props) {
     </View>
   );
 }
+
+function Restaurant(props) {
+  const { restaurant } = props;
+  const { name } = restaurant.item;
+
+  return (
+    <View>
+      <Text>{name}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  viewBody: {
+    flex: 1,
+    backgroundColor: "#f2f2f2",
+  },
+  loaderRestaurants: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
+});
