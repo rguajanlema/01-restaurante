@@ -36,6 +36,16 @@ export default function Restaurant(props) {
 
   return (
     <ScrollView vertical style={styles.viewBody}>
+      <View style={styles.viewFavorite}>
+        <Icon
+          type="material-community"
+          name="heart"
+          onPress={() => console.log("Add favorites")}
+          color="#000"
+          size={35}
+          underlayColor="transparent"
+        />
+      </View>
       <Carousel
         arrayImages={restaurant.images}
         height={250}
@@ -149,5 +159,15 @@ const styles = StyleSheet.create({
   containerListItem: {
     borderBottomColor: "#b8b8b8",
     borderBottomWidth: 1,
+  },
+  viewFavorite: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    zIndex: 2,
+    backgroundColor: "#fff",
+    borderBottomLeftRadius: 100,
+    padding: 5,
+    paddingLeft: 15,
   },
 });
