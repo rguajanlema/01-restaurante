@@ -14,7 +14,6 @@ import {
   doc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { async } from "@firebase/util";
 
 const auth = getAuth();
 const db = getFirestore(firebaseApp);

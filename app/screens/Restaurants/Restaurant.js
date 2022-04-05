@@ -9,7 +9,13 @@ import Carousel from "../../components/Carousel";
 import ListReviews from "../../components/Restaurants/ListReviews";
 
 import { firebaseApp } from "../../utils/firebase";
-import { getFirestore, getDoc, doc } from "firebase/firestore";
+import {
+  getFirestore,
+  getDoc,
+  doc,
+  collection,
+  addDoc,
+} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
@@ -43,7 +49,24 @@ export default function Restaurant(props) {
   );
 
   const addFavorite = () => {
-    console.log("Anadir a favoritos");
+    if (!userLogged) {
+      toastRef.current.show(
+        "Para usar el sistema de favoritos tienes que estar logeado"
+      );
+    } else {
+      const paylod = {
+        idUser: auth.currentUser.uid,
+        idRestaurant: restaurant.id,
+      };
+      addDoc(collection(db, "favorites"), paylod)
+        .then(() => {
+          setIsFavorite(true);
+          toastRef.current.show("Restaurante añadido a favoritos");
+        })
+        .catch(() => {
+          toastRef.current.show("Error al añadir el restaurante a favoritos");
+        });
+    }
   };
 
   const removeFavorite = () => {
