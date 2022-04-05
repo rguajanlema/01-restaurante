@@ -15,6 +15,7 @@ import {
   getDocs,
   query,
   doc,
+  deleteDoc,
   collection,
   addDoc,
   where,
@@ -89,7 +90,30 @@ export default function Restaurant(props) {
   };
 
   const removeFavorite = () => {
-    console.log("Quitar de favorito");
+    const favoriteRef = collection(db, "favorites");
+
+    getDocs(
+      query(
+        favoriteRef,
+        where("idRestaurant", "==", restaurant.id),
+        where("idUser", "==", auth.currentUser.uid)
+      )
+    ).then((querySnapshot) => {
+      querySnapshot.forEach((response) => {
+        const idFavorite = response.id;
+
+        deleteDoc(doc(db, "favorites", idFavorite))
+          .then(() => {
+            setIsFavorite(false);
+            toastRef.current.show("Restaurante eliminado de favoritos");
+          })
+          .catch(() => {
+            toastRef.current.show(
+              "Error al eliminar el restaurante de favoritos"
+            );
+          });
+      });
+    });
   };
 
   if (!restaurant) return <Loading isVisible={true} text="Cargando..." />;
