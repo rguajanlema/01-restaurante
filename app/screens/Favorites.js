@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Image, Icon, Button } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
+import Toast from "react-native-easy-toast";
 import Loading from "../components/Loading";
 
 import { firebaseApp } from "../utils/firebase";
@@ -32,6 +33,9 @@ export default function Favorites(props) {
   const { navigation } = props;
   const [restaurants, setRestaurants] = useState(null);
   const [userLogged, setUserLogged] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [reloadData, setReloadData] = useState(false);
+  const toastRef = useRef();
 
   onAuthStateChanged(auth, (user) => {
     user ? setUserLogged(true) : setUserLogged(false);
@@ -60,7 +64,8 @@ export default function Favorites(props) {
           });
         });
       }
-    }, [userLogged]) //esto ejecuta cada vez que userLogged presente un cambio
+      setReloadData(false);
+    }, [userLogged, reloadData]) //esto ejecuta cada vez que userLogged presente un cambio
   );
 
   const getDataRestaurant = (idRestaurantsArray) => {
@@ -85,15 +90,24 @@ export default function Favorites(props) {
       {restaurants ? (
         <FlatList
           data={restaurants}
-          renderItem={(restaurant) => <Restaurant restaurant={restaurant} />}
+          renderItem={(restaurant) => (
+            <Restaurant
+              restaurant={restaurant}
+              setIsLoading={setIsLoading}
+              toastRef={toastRef}
+              setReloadData={setReloadData}
+            />
+          )}
           keyExtractor={(item, index) => index.toString()}
         />
       ) : (
         <View style={styles.loaderRestaurants}>
           <ActivityIndicator size="large" />
-          <Text>Cargando restaurantes</Text>
+          <Text style={{ textAlign: "center" }}>Cargando restaurantes</Text>
         </View>
       )}
+      <Toast ref={toastRef} position="center" opacity={0.9} />
+      <Loading text="Eliminando restaurante" isVisible={isLoading} />
     </View>
   );
 }
@@ -129,7 +143,7 @@ function UserNoLogged(props) {
 }
 
 function Restaurant(props) {
-  const { restaurant } = props;
+  const { restaurant, setIsLoading, toastRef, setReloadData } = props;
   const { id, name, images } = restaurant.item;
 
   const confirmRemoveFavorite = () => {
@@ -151,6 +165,7 @@ function Restaurant(props) {
   };
 
   const removeFavorite = () => {
+    setIsLoading(true);
     const favoriteRef = collection(db, "favorites");
 
     getDocs(
@@ -165,10 +180,13 @@ function Restaurant(props) {
 
         deleteDoc(doc(db, "favorites", idFavorite))
           .then(() => {
-            console.log("Eliminado");
+            setIsLoading(false);
+            setReloadData(true);
+            toastRef.current.show("Restaurante eliminado correctamente");
           })
           .catch(() => {
-            console.log("ERROR");
+            setIsLoading(false);
+            toastRef.current.show("Error al eliminar el restaurante");
           });
       });
     });
