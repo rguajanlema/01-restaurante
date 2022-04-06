@@ -45,6 +45,25 @@ export default function Search(props) {
         value={searchText}
         containerStyle={styles.searchBar}
       />
+      {size(searchResults) === 0 ? (
+        <NotFoundRestaurants />
+      ) : (
+        <View>
+          <Text>Resultado..</Text>
+        </View>
+      )}
+    </View>
+  );
+}
+
+function NotFoundRestaurants() {
+  return (
+    <View style={{ flex: 1, alignItems: "center" }}>
+      <Image
+        source={require("../../assets/img/no-result-found.png")}
+        resizeMode="cover"
+        style={{ width: 200, height: 200 }}
+      />
     </View>
   );
 }
