@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text } from "react-native";
 import Toast from "react-native-easy-toast";
+import LisTopRestaurants from "../components/Ranking/LisTopRestaurants";
 
 import { firebaseApp } from "../utils/firebase";
 import {
@@ -38,7 +39,7 @@ export default function TopRestaurants(props) {
 
   return (
     <View>
-      <Text>TopRestaurants</Text>
+      <LisTopRestaurants restaurants={restaurants} navigation={navigation} />
       <Toast ref={toastRef} position="center" opacity={0.9} />
     </View>
   );
