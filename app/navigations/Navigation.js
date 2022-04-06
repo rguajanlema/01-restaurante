@@ -10,6 +10,8 @@ import TopRestaurantsStack from "./TopRestaurantsStack";
 import SearchStack from "./SearchStack";
 import AccountStack from "./AccountStack";
 
+import { screen } from "../utils";
+
 const Tab = createBottomTabNavigator();
 
 export default function Navigation() {
@@ -24,27 +26,27 @@ export default function Navigation() {
         })}
       >
         <Tab.Screen
-          name="restaurantsstack"
+          name={screen.restaurant.tab}
           component={RestaurantsStack}
           options={{ title: "Restaurantes", headerShown: false }}
         />
         <Tab.Screen
-          name="favoritesstack"
+          name={screen.favorites.tab}
           component={FavoritesStack}
           options={{ title: "Favoritos", headerShown: false }}
         />
         <Tab.Screen
-          name="top-restaurantsstack"
+          name={screen.ranking.tab}
           component={TopRestaurantsStack}
-          options={{ title: "Top 5", headerShown: false }}
+          options={{ title: "Ranking", headerShown: false }}
         />
         <Tab.Screen
-          name="searchstack"
+          name={screen.search.tab}
           component={SearchStack}
           options={{ title: "Buscar", headerShown: false }}
         />
         <Tab.Screen
-          name="accountstack"
+          name={screen.account.tab}
           component={AccountStack}
           options={{ title: "Cuenta", headerShown: false }}
         />
@@ -57,19 +59,19 @@ function screenOptions(route, color) {
   let iconName;
 
   switch (route.name) {
-    case "restaurantsstack":
+    case screen.restaurant.tab:
       iconName = "compass-outline";
       break;
-    case "favoritesstack":
+    case screen.favorites.tab:
       iconName = "heart-outline";
       break;
-    case "top-restaurantsstack":
+    case screen.ranking.tab:
       iconName = "star-outline";
       break;
-    case "searchstack":
+    case screen.search.tab:
       iconName = "magnify";
       break;
-    case "accountstack":
+    case screen.account.tab:
       iconName = "home-outline";
       break;
     default:
