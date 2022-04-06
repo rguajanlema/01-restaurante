@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, FlatList, Image } from "react-native";
-import { SearchBar, ListItem, Icon } from "react-native-elements";
+import { View, Image, ScrollView } from "react-native";
+import { SearchBar, ListItem, Icon, Avatar } from "react-native-elements";
 import firebaseApp from "../utils/firebase";
 import {
   getFirestore,
@@ -12,15 +12,16 @@ import {
   orderBy,
   getDocs,
 } from "firebase/firestore";
-import { size } from "lodash";
+import { map, size } from "lodash";
+import { useNavigation } from "@react-navigation/native";
 import Loading from "../components/Loading";
 
 const db = getFirestore(firebaseApp);
 
-export default function Search(props) {
-  const { navigation } = props;
+export default function Search() {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -37,22 +38,51 @@ export default function Search(props) {
     })();
   }, [searchText]);
 
+  const goToRestaurant = (idRestaurant) => {
+    console.log(idRestaurant);
+  };
+
   return (
-    <View>
+    <>
       <SearchBar
         placeholder="Busca tu restaurante..."
         onChangeText={(text) => setSearchText(text)}
         value={searchText}
-        containerStyle={styles.searchBar}
       />
-      {size(searchResults) === 0 ? (
-        <NotFoundRestaurants />
-      ) : (
-        <View>
-          <Text>Resultado..</Text>
-        </View>
-      )}
-    </View>
+
+      {!searchResults && <Loading show text="Cargando" />}
+
+      <ScrollView>
+        {size(searchResults) === 0 ? (
+          <NotFoundRestaurants />
+        ) : (
+          map(searchResults, (item) => {
+            const data = item.data();
+
+            return (
+              <ListItem
+                key={data.id}
+                bottomDivider
+                onPress={() => goToRestaurant(data.id)}
+              >
+                <Avatar
+                  source={
+                    data.images[0]
+                      ? { uri: data.images[0] }
+                      : require("../../assets/img/no-image.png")
+                  }
+                  rounded
+                />
+                <ListItem.Content>
+                  <ListItem.Title>{data.name}</ListItem.Title>
+                </ListItem.Content>
+                <Icon type="material-community" name="chevron-right" />
+              </ListItem>
+            );
+          })
+        )}
+      </ScrollView>
+    </>
   );
 }
 
@@ -67,9 +97,3 @@ function NotFoundRestaurants() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  searchBar: {
-    marginBottom: 20,
-  },
-});
