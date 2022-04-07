@@ -2,13 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
-import { firebaseApp } from "../../utils/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
-  getFirestore,
-  doc,
   getDocs,
-  setDoc,
   collection,
   query,
   orderBy,
@@ -17,10 +13,9 @@ import {
 } from "firebase/firestore";
 
 import ListRestaurants from "../../components/Restaurants/ListRestaurants";
-import { screen } from "../../utils";
+import { db, screen } from "../../utils";
 
 const auth = getAuth();
-const db = getFirestore(firebaseApp);
 
 export default function Restaurants(props) {
   const { navigation } = props;

@@ -22,7 +22,6 @@ export default function Search(props) {
   const { navigation } = props;
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState(null);
-  //console.log(searchResults.data());
 
   useEffect(() => {
     (async () => {

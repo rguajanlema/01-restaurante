@@ -4,16 +4,16 @@ import { Avatar } from "react-native-elements";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
-import firebaseApp from "../../utils/firebase";
+import firebaseApp from "../../../utils/firebase";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
+import { styles } from "./InfoUser.styles";
 
 const firestore = getFirestore(firebaseApp);
 
 export default function InfoUser(props) {
-  const {
-    userInfo: { uid, photoURL, displayName, email },
-    toastRef,
-  } = props;
+  const { uid, photoURL, displayName, email } = getAuth().currentUser;
 
   const changeAvatar = async () => {
     const resultPermision = await Permissions.askAsync(Permissions.CAMERA);
@@ -43,37 +43,18 @@ export default function InfoUser(props) {
   const uploadImage = async (uri) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    //const ref = firebaseApp.firestore().ref().child(`avatar/${uid}`);
-    //return ref.put(blob);
-
-    console.log(JSON.stringify(blob));
-    console.log(uid);
-
-    //const ref =  doc(firestore, `avatar/${uid}`);
-    /*if (consulta.exists()) {
-      const infoDocu = consulta.data();
-      return infoDocu.Avatar;
-    } else {
-      await setDoc(docuRef, uid);
-      const consulta = await getDoc(docuRef);
-      const infoDocu = consulta.data();
-      return infoDocu.Avatar;
-    }*/
   };
 
   return (
-    <View style={styles.viewUserInfo}>
+    <View style={styles.content}>
       <Avatar
-        rounded
         size="large"
-        containerStyle={styles.userInfoAvatar}
-        source={
-          photoURL
-            ? { uri: photoURL }
-            : require("../../../assets/img/avatar-default.jpg")
-        }
+        rounded
+        containerStyle={styles.avatar}
+        icon={{ type: "material", name: "person" }}
+        source={{ uri: photoURL }}
       >
-        <Avatar.Accessory size={23} onPress={changeAvatar} />
+        <Avatar.Accessory size={24} onPress={changeAvatar} />
       </Avatar>
       <View>
         <Text style={styles.displayName}>
@@ -84,21 +65,3 @@ export default function InfoUser(props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  viewUserInfo: {
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    backgroundColor: "#f2f2f2",
-    paddingTop: 30,
-    paddingBottom: 30,
-  },
-  userInfoAvatar: {
-    marginRight: 20,
-  },
-  displayName: {
-    fontWeight: "bold",
-    paddingBottom: 5,
-  },
-});
