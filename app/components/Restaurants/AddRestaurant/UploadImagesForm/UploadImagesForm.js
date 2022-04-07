@@ -4,7 +4,7 @@ import { Icon, Avatar, Text } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { map } from "lodash";
+import { map, filter } from "lodash";
 import Loading from "../../../Loading";
 import { styles } from "./UploadImagesForm.styles";
 
@@ -49,6 +49,31 @@ export function UploadImagesForm(props) {
     setIsLoading(false);
   };
 
+  const removeImage = (img) => {
+    Alert.alert(
+      "Eliminar imagen",
+      "Estas seguro de eliminar esta imagen?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Eliminar",
+          onPress: () => {
+            const result = filter(
+              formik.values.images,
+              (image) => image !== img
+            );
+            //eliminar imagen del array
+            formik.setFieldValue("images", result);
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <>
       <ScrollView
@@ -68,6 +93,7 @@ export function UploadImagesForm(props) {
             key={image}
             source={{ uri: image }}
             containerStyle={styles.imageStyle}
+            onPress={() => removeImage(image)}
           />
         ))}
       </ScrollView>
