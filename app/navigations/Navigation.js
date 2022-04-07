@@ -18,8 +18,8 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="restaurantsstack"
         screenOptions={({ route }) => ({
+          headerShown: false,
           tabBarIcon: ({ color }) => screenOptions(route, color),
           tabBarInactiveTintColor: "#646464",
           tabBarActiveTintColor: "#00a680",
@@ -28,27 +28,27 @@ export default function Navigation() {
         <Tab.Screen
           name={screen.restaurant.tab}
           component={RestaurantsStack}
-          options={{ title: "Restaurantes", headerShown: false }}
+          options={{ title: "Restaurantes" }}
         />
         <Tab.Screen
           name={screen.favorites.tab}
           component={FavoritesStack}
-          options={{ title: "Favoritos", headerShown: false }}
+          options={{ title: "Favoritos" }}
         />
         <Tab.Screen
           name={screen.ranking.tab}
           component={TopRestaurantsStack}
-          options={{ title: "Ranking", headerShown: false }}
+          options={{ title: "Ranking" }}
         />
         <Tab.Screen
           name={screen.search.tab}
           component={SearchStack}
-          options={{ title: "Buscar", headerShown: false }}
+          options={{ title: "Buscar" }}
         />
         <Tab.Screen
           name={screen.account.tab}
           component={AccountStack}
-          options={{ title: "Cuenta", headerShown: false }}
+          options={{ title: "Cuenta" }}
         />
       </Tab.Navigator>
     </NavigationContainer>

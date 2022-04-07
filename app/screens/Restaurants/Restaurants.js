@@ -17,6 +17,7 @@ import {
 } from "firebase/firestore";
 
 import ListRestaurants from "../../components/Restaurants/ListRestaurants";
+import { screen } from "../../utils";
 
 const auth = getAuth();
 const db = getFirestore(firebaseApp);
@@ -111,7 +112,7 @@ export default function Restaurants(props) {
           name="plus"
           color="#00a680"
           containerStyle={styles.btnContainer}
-          onPress={() => navigation.navigate("add-restaurant")}
+          onPress={() => navigation.navigate(screen.restaurant.addRestaurant)}
         />
       )}
     </View>

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Card, Icon, Image, Rating } from "react-native-elements";
+import { screen } from "../../utils";
 
 export default function LisTopRestaurants(props) {
   const { restaurants, navigation } = props;
@@ -36,15 +37,15 @@ function Restaurant(props) {
     }
   }, []);
 
+  const goToRestaurant = () => {
+    navigation.navigate(screen.restaurant.tab, {
+      screen: screen.restaurant.restaurant,
+      params: { id: id },
+    });
+  };
+
   return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("restaurantes", {
-          screen: "restaurant",
-          params: { id },
-        })
-      }
-    >
+    <TouchableOpacity onPress={goToRestaurant}>
       <Card containerStyle={styles.containerCard}>
         <Icon
           type="material-community"

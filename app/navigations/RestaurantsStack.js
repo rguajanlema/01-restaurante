@@ -1,28 +1,33 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { screen } from "../utils";
 import Restaurants from "../screens/Restaurants/Restaurants";
 import AddRestaurant from "../screens/Restaurants/AddRestaurant";
 import Restaurant from "../screens/Restaurants/Restaurant";
 import AddReviewRestaurant from "../screens/Restaurants/AddReviewRestaurant";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function RestaurantsStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="restaurantes"
+        name={screen.restaurant.restaurants}
         component={Restaurants}
         options={{ title: "Restaurante" }}
       />
       <Stack.Screen
-        name="add-restaurant"
+        name={screen.restaurant.addRestaurant}
         component={AddRestaurant}
         options={{ title: "Anadir nuevo restaurante" }}
       />
-      <Stack.Screen name="restaurant" component={Restaurant} />
       <Stack.Screen
-        name="add-review-restaurant"
+        name={screen.restaurant.restaurant}
+        component={Restaurant}
+        options={{ title: "Restaurante" }}
+      />
+      <Stack.Screen
+        name={screen.restaurant.addReviewRestaurant}
         component={AddReviewRestaurant}
         options={{ title: "Nuevo comentario" }}
       />

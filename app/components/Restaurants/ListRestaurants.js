@@ -10,6 +10,7 @@ import {
 import { Image } from "react-native-elements";
 import { size } from "lodash";
 import { useNavigation } from "@react-navigation/native";
+import { screen } from "../../utils";
 
 export default function limitRestaurants(props) {
   const { restaurants, handleLoadMore, isLoading } = props;
@@ -44,7 +45,7 @@ function Restaurant(props) {
   const imageRestaurant = images ? images[0] : null;
 
   const goRestaurant = () => {
-    navigation.navigate("restaurant", { id, name });
+    navigation.navigate(screen.restaurant.restaurant, { id, name });
   };
 
   return (

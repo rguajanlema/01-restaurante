@@ -13,6 +13,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { screen } from "../../utils";
 
 const auth = getAuth();
 const db = getFirestore(firebaseApp);
@@ -56,7 +57,7 @@ export default function ListReviews(props) {
             color: "#00a680",
           }}
           onPress={() =>
-            navigation.navigate("add-review-restaurant", {
+            navigation.navigate(screen.restaurant.addReviewRestaurant, {
               idRestaurant: idRestaurant,
             })
           }

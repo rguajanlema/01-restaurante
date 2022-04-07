@@ -25,6 +25,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { screen } from "../utils";
 
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
@@ -137,7 +138,11 @@ function UserNoLogged(props) {
         title="Ir al login"
         containerStyle={{ marginTop: 20, width: "80%" }}
         buttonStyle={{ backgroundColor: "#00a680" }}
-        onPress={() => navigation.navigate("account", { screen: "login" })}
+        onPress={() =>
+          navigation.navigate(screen.account.tab, {
+            screen: screen.account.login,
+          })
+        }
       />
     </View>
   );
@@ -194,16 +199,16 @@ function Restaurant(props) {
     });
   };
 
+  const goToRestaurant = () => {
+    navigation.navigate(screen.restaurant.tab, {
+      screen: screen.restaurant.restaurant,
+      params: { id: id },
+    });
+  };
+
   return (
     <View style={styles.restaurant}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("restaurantes", {
-            screen: "restaurant",
-            params: { id },
-          })
-        }
-      >
+      <TouchableOpacity onPress={goToRestaurant}>
         <Image
           resizeMode="cover"
           style={styles.image}

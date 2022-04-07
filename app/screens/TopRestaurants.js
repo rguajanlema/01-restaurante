@@ -19,7 +19,7 @@ export default function TopRestaurants(props) {
   const { navigation } = props;
   const [restaurants, setRestaurants] = useState([]);
   const toastRef = useRef();
-  console.log(restaurants);
+
   useEffect(() => {
     const firstQuery = query(
       collection(db, "restaurants"),

@@ -13,15 +13,16 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { map, size } from "lodash";
-import { useNavigation } from "@react-navigation/native";
+
 import Loading from "../components/Loading";
 
 const db = getFirestore(firebaseApp);
 
-export default function Search() {
+export default function Search(props) {
+  const { navigation } = props;
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState(null);
-  const navigation = useNavigation();
+  //console.log(searchResults.data());
 
   useEffect(() => {
     (async () => {
@@ -58,7 +59,7 @@ export default function Search() {
         ) : (
           map(searchResults, (item) => {
             const data = item.data();
-
+            console.log(data);
             return (
               <ListItem
                 key={data.id}
