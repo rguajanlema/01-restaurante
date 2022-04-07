@@ -1,48 +1,36 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Avatar } from "react-native-elements";
-import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
-import firebaseApp from "../../../utils/firebase";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 import { styles } from "./InfoUser.styles";
 
-const firestore = getFirestore(firebaseApp);
-
-export default function InfoUser(props) {
+export default function InfoUser() {
   const { uid, photoURL, displayName, email } = getAuth().currentUser;
 
   const changeAvatar = async () => {
-    const resultPermision = await Permissions.askAsync(Permissions.CAMERA);
-    const resultPermisionCamera = resultPermision.permissions.camera.status;
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
 
-    if (resultPermisionCamera === "denied") {
-      toastRef.current.show("Es necesario aceptar los permisos de la galeria");
-    } else {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        aspect: [4, 3],
-      });
-      if (result.cancelled) {
-        toastRef.current.show("Has cerrado la seleccion de imagenes");
-      } else {
-        uploadImage(result.uri)
-          .then(() => {
-            console.log("Imagen subida");
-          })
-          .catch(() => {
-            toastRef.current.show("Error al actualizar el avatar");
-          });
-      }
-    }
+    if (!result.cancelled) uploadImage(result.uri);
   };
 
   const uploadImage = async (uri) => {
     const response = await fetch(uri);
     const blob = await response.blob();
+
+    const storage = getStorage();
+    const storageRef = ref(storage, `avatar/${uid}`);
+
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      console.log(snapshot.metadata);
+    });
   };
 
   return (
