@@ -3,7 +3,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 //compones
 import Loading from "../../components/Loading";
 import UserGuest from "./UserGuest";
-import UserLogged from "./UserLogged";
+import UserLogged from "./UserLogged/UserLogged";
 
 const auth = getAuth();
 
