@@ -13,4 +13,11 @@ export const styles = StyleSheet.create({
     width: 70,
     height: 70,
   },
+  error: {
+    marginHorizontal: 20,
+    marginTop: 10,
+    color: "#ff0000",
+    fontSize: 12,
+    paddingLeft: 6,
+  },
 });

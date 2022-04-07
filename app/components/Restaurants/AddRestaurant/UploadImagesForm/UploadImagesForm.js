@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { Icon, Avatart, Text } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
+import Loading from "../../../Loading";
 import { styles } from "./UploadImagesForm.styles";
 
 export function UploadImagesForm(props) {
   const { formik } = props;
+  const [isLoading, setIsLoading] = useState(false);
 
   const openGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -16,8 +20,32 @@ export function UploadImagesForm(props) {
     });
 
     if (!result.cancelled) {
-      console.log("Upload image");
+      setIsLoading(true);
+      uploadImage(result.uri);
     }
+  };
+
+  const uploadImage = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    const storage = getStorage();
+
+    const storageRef = ref(storage, `restaurants/${uuidv4()}`);
+
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      updatePhotosRestaurant(snapshot.metadata.fullPath);
+    });
+  };
+
+  const updatePhotosRestaurant = async (imagePath) => {
+    const storage = getStorage();
+    const imageRef = ref(storage, imagePath);
+
+    const imageUrl = await getDownloadURL(imageRef);
+    //obtenermos toda la collecion del array y luego le agrega otro dato
+    formik.setFieldValue("images", [...formik.values.images, imageUrl]);
+    setIsLoading(false);
   };
 
   return (
@@ -31,6 +59,8 @@ export function UploadImagesForm(props) {
           onPress={openGallery}
         />
       </View>
+      <Text style={styles.error}>{formik.errors.images}</Text>
+      <Loading isVisible={isLoading} text="Subiendo imagen" />
     </>
   );
 }

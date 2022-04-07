@@ -1,7 +1,7 @@
 import React from "react";
 import { LogBox } from "react-native";
-import { firebaseApp } from "./app/utils/firebase";
 import { decode, encode } from "base-64";
+import "react-native-get-random-values";
 //components
 import Navigation from "./app/navigations/Navigation";
 

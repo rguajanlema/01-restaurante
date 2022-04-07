@@ -7,6 +7,7 @@ export function initialValues() {
     phone: "",
     email: "",
     description: "",
+    images: [],
   };
 }
 
@@ -20,5 +21,9 @@ export function validationSchema() {
       .email("Campo obligatorio")
       .required("Campo obligatorio"),
     description: yup.string().required("Campo obligatorio"),
+    images: yup
+      .array()
+      .min(1, "Se requiere una imagen camo minimo")
+      .required("La imagen es requerida"),
   });
 }
