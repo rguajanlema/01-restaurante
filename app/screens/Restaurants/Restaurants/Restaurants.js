@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -12,14 +12,13 @@ import {
   startAfter,
 } from "firebase/firestore";
 
-import ListRestaurants from "../../components/Restaurants/ListRestaurants";
-import { db, screen } from "../../utils";
-
-const auth = getAuth();
+import ListRestaurants from "../../../components/Restaurants/ListRestaurants";
+import { db, screen } from "../../../utils";
+import { styles } from "./Restaurants.styles";
 
 export default function Restaurants(props) {
   const { navigation } = props;
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
   const [totalRestaurants, setTotalRestaurants] = useState(0);
   const [startRestaurants, setStartRestaurants] = useState(null);
@@ -27,8 +26,9 @@ export default function Restaurants(props) {
   const limitRestaurants = 10;
 
   useEffect(() => {
-    onAuthStateChanged(auth, (userInfo) => {
-      setUser(userInfo);
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
     });
   }, []);
 
@@ -91,6 +91,9 @@ export default function Restaurants(props) {
 
     setRestaurants([...restaurants, ...resultRestaurants]);
   };
+  const goToAddRestaurant = () => {
+    navigation.navigate(screen.restaurant.addRestaurant);
+  };
 
   return (
     <View style={styles.viewBody}>
@@ -100,30 +103,16 @@ export default function Restaurants(props) {
         isLoading={isLoading}
       />
 
-      {user && (
+      {currentUser && (
         <Icon
           reverse
           type="material-community"
           name="plus"
           color="#00a680"
           containerStyle={styles.btnContainer}
-          onPress={() => navigation.navigate(screen.restaurant.addRestaurant)}
+          onPress={goToAddRestaurant}
         />
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  viewBody: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  btnContainer: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
-    shadowColor: "black",
-    shadowOffset: { width: 2, height: 2 },
-  },
-});
