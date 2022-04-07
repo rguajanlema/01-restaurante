@@ -20,4 +20,9 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     paddingLeft: 6,
   },
+  imageStyle: {
+    width: 70,
+    height: 70,
+    marginRight: 10,
+  },
 });

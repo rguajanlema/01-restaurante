@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Icon, Avatart, Text } from "react-native-elements";
+import { Icon, Avatar, Text } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import { map } from "lodash";
 import Loading from "../../../Loading";
 import { styles } from "./UploadImagesForm.styles";
 
@@ -58,6 +59,13 @@ export function UploadImagesForm(props) {
           containerStyle={styles.containerIcon}
           onPress={openGallery}
         />
+        {map(formik.values.images, (image) => (
+          <Avatar
+            key={image}
+            source={{ uri: image }}
+            containerStyle={styles.imageStyle}
+          />
+        ))}
       </View>
       <Text style={styles.error}>{formik.errors.images}</Text>
       <Loading isVisible={isLoading} text="Subiendo imagen" />
