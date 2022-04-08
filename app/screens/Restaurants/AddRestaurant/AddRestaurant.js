@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { db } from "../../../utils/firebase";
 import { doc, setDoc } from "firebase/firestore";
+
 import { useNavigation } from "@react-navigation/native";
 import {
   InfoForm,
@@ -27,9 +28,11 @@ export default function AddRestaurant() {
         const newData = formValue;
         newData.id = uuidv4();
         newData.createdAt = new Date();
+        const myDoc = doc(db, "restaurants", newData.id);
 
-        await setDoc(doc(db, "restaurants", newData.id), newData);
-        navigation.goBack();
+        console.log(formValue);
+        await setDoc(myDoc, newData);
+        //navigation.goBack();
       } catch (error) {
         console.log(error);
       }
@@ -39,6 +42,7 @@ export default function AddRestaurant() {
   return (
     <ScrollView showsHorizontalScrollIndicator={false}>
       <ImageRestaurant formik={formik} />
+
       <InfoForm formik={formik} />
 
       <UploadImagesForm formik={formik} />
