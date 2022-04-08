@@ -9,7 +9,7 @@ export function ListRestaurants(props) {
       <FlatList
         data={restaurants}
         renderItem={(doc) => {
-          return <Text>Restaurants</Text>;
+          return <Text>Restaurants...</Text>;
         }}
       />
     </View>

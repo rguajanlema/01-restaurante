@@ -28,11 +28,9 @@ export default function AddRestaurant() {
         const newData = formValue;
         newData.id = uuidv4();
         newData.createdAt = new Date();
-        const myDoc = doc(db, "restaurants", newData.id);
 
-        console.log(formValue);
-        await setDoc(myDoc, newData);
-        //navigation.goBack();
+        await setDoc(doc(db, "restaurants", newData.id), newData);
+        navigation.goBack();
       } catch (error) {
         console.log(error);
       }

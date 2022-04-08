@@ -30,7 +30,7 @@ export default function Restaurants(props) {
     onSnapshot(q, (snapshot) => {
       setRestaurants(snapshot.docs);
     });
-  });
+  }, []);
 
   const goToAddRestaurant = () => {
     navigation.navigate(screen.restaurant.addRestaurant);
