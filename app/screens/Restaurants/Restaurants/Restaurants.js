@@ -10,11 +10,12 @@ import {
   orderBy,
   limit,
   startAfter,
+  onSnapshot,
 } from "firebase/firestore";
 
-import ListRestaurants from "../../../components/Restaurants/ListRestaurants";
 import { db, screen } from "../../../utils";
 import { styles } from "./Restaurants.styles";
+import Loading from "../../../components/Loading";
 
 export default function Restaurants(props) {
   const { navigation } = props;
@@ -32,76 +33,25 @@ export default function Restaurants(props) {
     });
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      loadData();
-    }, [])
-  );
+  useEffect(() => {
+    const q = query(collection(db, "restaurants").orderBy("createdAt", "desc"));
 
-  const loadData = async () => {
-    getDocs(collection(db, "restaurants")).then((snap) => {
-      setTotalRestaurants(snap.size);
+    onSnapshot(q, (snapshot) => {
+      setRestaurants(snapshot.docs);
     });
+  });
 
-    const resultRestaurants = [];
-
-    const firstQuery = query(
-      collection(db, "restaurants"),
-      orderBy("createAt", "desc"),
-      limit(limitRestaurants)
-    );
-
-    const response = await getDocs(firstQuery);
-
-    setStartRestaurants(response.docs[response.docs.length - 1]);
-
-    response.forEach((doc) => {
-      const restaurant = doc.data();
-      restaurant.id = doc.id;
-      resultRestaurants.push(restaurant);
-    });
-
-    setRestaurants(resultRestaurants);
-  };
-
-  const handleLoadMore = async () => {
-    const resultRestaurants = [];
-    restaurants.length < totalRestaurants && setIsLoading(true);
-
-    const firstQuery = query(
-      collection(db, "restaurants"),
-      orderBy("createAt", "desc"),
-      startAfter(startRestaurants.data().createAt),
-      limit(limitRestaurants)
-    );
-
-    const response = await getDocs(firstQuery);
-
-    if (response.docs.length > 0) {
-      setStartRestaurants(response.docs[response.docs.length - 1]);
-    } else {
-      setIsLoading(false);
-    }
-
-    response.forEach((doc) => {
-      const restaurant = doc.data();
-      restaurant.id = doc.id;
-      resultRestaurants.push(restaurant);
-    });
-
-    setRestaurants([...restaurants, ...resultRestaurants]);
-  };
   const goToAddRestaurant = () => {
     navigation.navigate(screen.restaurant.addRestaurant);
   };
 
   return (
     <View style={styles.viewBody}>
-      <ListRestaurants
-        restaurants={restaurants}
-        handleLoadMore={handleLoadMore}
-        isLoading={isLoading}
-      />
+      {!restaurants ? (
+        <Loading isVisible={isVisible} text="Cargando" />
+      ) : (
+        <Text>Lista de restaurantes</Text>
+      )}
 
       {currentUser && (
         <Icon
