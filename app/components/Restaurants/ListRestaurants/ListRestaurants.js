@@ -1,21 +1,17 @@
 import React from "react";
-import {
-  Text,
-  View,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
-import { Image } from "react-native-elements";
-import { size } from "lodash";
-import { useNavigation } from "@react-navigation/native";
-import { screen } from "../../utils";
+import { View, Text, FlatList } from "react-native";
 import { styles } from "./ListRestaurants.styles";
 
-export function ListRestaurants() {
+export function ListRestaurants(props) {
+  const { restaurants } = props;
   return (
     <View>
-      <Text>ListRestaurants</Text>
+      <FlatList
+        data={restaurants}
+        renderItem={(doc) => {
+          return <Text>Restaurants</Text>;
+        }}
+      />
     </View>
   );
 }

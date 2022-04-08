@@ -7,7 +7,7 @@ import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { LoadingModal } from "../../../components/Shared";
 import { db, screen } from "../../../utils";
 import { styles } from "./Restaurants.styles";
-import { ListRestaurants } from "../../../components/Restaurants/ListRestaurants";
+import { ListRestaurants } from "../../../components/Restaurants";
 
 export default function Restaurants(props) {
   const { navigation } = props;

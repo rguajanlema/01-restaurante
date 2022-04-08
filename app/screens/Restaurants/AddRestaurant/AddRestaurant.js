@@ -3,6 +3,8 @@ import { View, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
 import { useFormik } from "formik";
 import { v4 as uuidv4 } from "uuid";
+
+import { db } from "../../../utils/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -12,8 +14,6 @@ import {
 } from "../../../components/Restaurants/AddRestaurant";
 import { initialValues, validationSchema } from "./AddRestaurant.data";
 import { styles } from "./AddRestaurant.styles";
-
-import { db } from "../../../utils/firebase";
 
 export default function AddRestaurant() {
   const navigation = useNavigation();
@@ -28,8 +28,7 @@ export default function AddRestaurant() {
         newData.id = uuidv4();
         newData.createdAt = new Date();
 
-        const myDb = doc(db, "restaurants", newData.id);
-        await setDoc(myDb, newData);
+        await setDoc(doc(db, "restaurants", newData.id), newData);
         navigation.goBack();
       } catch (error) {
         console.log(error);

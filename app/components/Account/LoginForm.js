@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { isEmpty } from "lodash";
-import { useNavigation } from "@react-navigation/native";
+
 import { validateEmail } from "../../utils/validations";
 import {
   getAuth,
@@ -10,18 +10,19 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import Loading from "../Loading";
+import { screen } from "../../utils";
 
 const auth = getAuth();
 
 export default function LoginForm(props) {
-  const { toastRef } = props;
+  const { toastRef, navigation } = props;
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(defaultFormValue());
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
 
   onAuthStateChanged(auth, (user) => {
-    user && navigation.navigate("account");
+    user && navigation.navigate(screen.account.account);
   });
 
   const onChange = (e, type) => {

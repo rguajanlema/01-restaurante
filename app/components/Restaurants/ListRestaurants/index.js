@@ -1,1 +1,1 @@
-export * from "./ListRestaurants.styles";
+export * from "./ListRestaurants";

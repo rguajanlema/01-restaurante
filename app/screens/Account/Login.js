@@ -6,6 +6,7 @@ import Toast from "react-native-easy-toast";
 import LoginForm from "../../components/Account/LoginForm";
 
 export default function Login() {
+  const navigation = useNavigation();
   const toastRef = useRef();
 
   return (
@@ -16,7 +17,7 @@ export default function Login() {
         style={styles.logo}
       />
       <View style={styles.viewContainer}>
-        <LoginForm toastRef={toastRef} />
+        <LoginForm toastRef={toastRef} navigation={navigation} />
         <CreateAccount />
       </View>
       <Divider style={styles.divider} />

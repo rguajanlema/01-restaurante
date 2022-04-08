@@ -9,7 +9,7 @@ export function InfoForm(props) {
   return (
     <View>
       <Input
-        placeholder="Nomnbre del restaurante"
+        placeholder="Nombre del restaurante"
         onChangeText={(text) => formik.setFieldValue("name", text)}
         errorMessage={formik.errors.name}
       />
