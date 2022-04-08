@@ -3,28 +3,16 @@ import { View, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {
-  getDocs,
-  collection,
-  query,
-  orderBy,
-  limit,
-  startAfter,
-  onSnapshot,
-} from "firebase/firestore";
-
+import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
+import { LoadingModal } from "../../../components/Shared";
 import { db, screen } from "../../../utils";
 import { styles } from "./Restaurants.styles";
-import Loading from "../../../components/Loading";
+import { ListRestaurants } from "../../../components/Restaurants/ListRestaurants";
 
 export default function Restaurants(props) {
   const { navigation } = props;
   const [currentUser, setCurrentUser] = useState(null);
-  const [restaurants, setRestaurants] = useState([]);
-  const [totalRestaurants, setTotalRestaurants] = useState(0);
-  const [startRestaurants, setStartRestaurants] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const limitRestaurants = 10;
+  const [restaurants, setRestaurants] = useState(null);
 
   useEffect(() => {
     const auth = getAuth();
@@ -34,7 +22,10 @@ export default function Restaurants(props) {
   }, []);
 
   useEffect(() => {
-    const q = query(collection(db, "restaurants").orderBy("createdAt", "desc"));
+    const q = query(
+      collection(db, "restaurants"),
+      orderBy("createdAt", "desc")
+    );
 
     onSnapshot(q, (snapshot) => {
       setRestaurants(snapshot.docs);
@@ -48,9 +39,9 @@ export default function Restaurants(props) {
   return (
     <View style={styles.viewBody}>
       {!restaurants ? (
-        <Loading isVisible={isVisible} text="Cargando" />
+        <LoadingModal show text="Cargando" />
       ) : (
-        <Text>Lista de restaurantes</Text>
+        <ListRestaurants restaurants={restaurants} />
       )}
 
       {currentUser && (
