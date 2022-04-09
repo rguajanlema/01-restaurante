@@ -1,24 +1,22 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  loaderRestaurants: {
-    marginTop: 10,
-    marginBottom: 10,
-    alignItems: "center",
-  },
-  viewRestaurant: {
+  restaurant: {
     flexDirection: "row",
     margin: 10,
   },
-  viewRestaurantImage: {
-    marginRight: 15,
-  },
-  imageRestaurant: {
+  image: {
     width: 80,
     height: 80,
+    marginRight: 15,
   },
-  restaurantName: {
+  name: {
     fontWeight: "bold",
+  },
+  info: {
+    color: "#828282",
+    paddingRight: 100,
+    marginTop: 3,
   },
   restaurantAddress: {
     paddingTop: 2,
