@@ -5,7 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { map, filter } from "lodash";
-import Loading from "../../../Loading";
+import Loading from "../../../Shared";
 import { styles } from "./UploadImagesForm.styles";
 
 export function UploadImagesForm(props) {
@@ -98,7 +98,7 @@ export function UploadImagesForm(props) {
         ))}
       </ScrollView>
       <Text style={styles.error}>{formik.errors.images}</Text>
-      <Loading isVisible={isLoading} text="Subiendo imagen" />
+      <Loading show text="Subiendo imagen" />
     </>
   );
 }

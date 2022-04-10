@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { Button } from "react-native-elements";
 import { getAuth, signOut } from "firebase/auth";
 import Toast from "react-native-easy-toast";
 
 //components
-import Loading from "../../../components/Loading";
-import InfoUser from "../../../components/Account/InfoUser/InfoUser";
-import AccountOptions from "../../../components/Account/AccountOptions";
+import Loading from "../../../components/Shared";
+import { InfoUser } from "../../../components/Account/InfoUser";
+import { AccountOptions } from "../../../components/Account/AccountOptions";
 import { styles } from "./UserLogged.styles";
 
-export default function UserLogged() {
+export function UserLogged() {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
@@ -55,7 +55,7 @@ export default function UserLogged() {
         onPress={logout}
       />
       <Toast ref={toastRef} position="center" opacity={0.9} />
-      <Loading text={loadingText} isVisible={loading} />
+      <Loading text={loadingText} show />
     </View>
   );
 }

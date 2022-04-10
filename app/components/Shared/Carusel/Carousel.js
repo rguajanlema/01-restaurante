@@ -6,6 +6,7 @@ import { styles } from "./Carusel.styles";
 
 export function Carousel(props) {
   const { arrayImages, height, width } = props;
+
   const renderItem = ({ item }) => {
     return <Image style={{ width, height }} source={{ uri: item }} />;
   };

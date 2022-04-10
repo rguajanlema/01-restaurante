@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ListItem, Icon } from "react-native-elements";
 import { map } from "lodash";
-import Modal from "../Modal";
+import Modal from "../../components/Shared";
 import ChangeDisplayNameForm from "./ChangeDisplayNameForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import ChangePasswordForm from "./ChangePasswordForm";

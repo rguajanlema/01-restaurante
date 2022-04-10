@@ -26,10 +26,10 @@ export default function Restaurants(props) {
       collection(db, "restaurants"),
       orderBy("createdAt", "desc")
     );
-
     onSnapshot(q, (snapshot) => {
       setRestaurants(snapshot.docs);
     });
+    console.log("hola");
   }, []);
 
   const goToAddRestaurant = () => {

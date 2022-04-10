@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { Overlay } from "react-native-elements";
+import { styles } from "./Modal.styles";
 
-export default function Modal(props) {
+export function Modal(props) {
   const { isVisible, setIsVisible, children } = props;
 
   const closeModal = () => setIsVisible(false);
@@ -19,11 +19,3 @@ export default function Modal(props) {
     </Overlay>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    height: "auto",
-    width: "90%",
-    backgroundColor: "#fff",
-  },
-});

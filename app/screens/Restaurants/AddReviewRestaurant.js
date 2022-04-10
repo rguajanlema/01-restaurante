@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { AirbnbRating, Button, Input } from "react-native-elements";
 import Toast from "react-native-easy-toast";
-import Loading from "../../components/Loading";
+import Loading from "../../components/Shared";
 
 import firebaseApp from "../../utils/firebase";
 import {
@@ -112,7 +112,7 @@ export default function AddReviewRestaurant(props) {
         />
       </View>
       <Toast ref={toastRef} position="center" opacity={0.9} />
-      <Loading isVisible={isLoading} text="Enviando comentario" />
+      <Loading show text="Enviando comentario" />
     </View>
   );
 }

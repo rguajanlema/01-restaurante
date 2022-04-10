@@ -1,16 +1,21 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
+import { View, ScrollView, Text, Image } from "react-native";
 import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
-import { screen } from "../../utils";
+import { screen } from "../../../utils";
+import { styles } from "./UserGuest.styles";
 
-export default function UserGuest() {
+export function UserGuest() {
   const navigation = useNavigation();
+
+  const goToLogin = () => {
+    navigation.navigate(screen.account.login);
+  };
 
   return (
     <ScrollView centerContent={true} style={styles.viewBody}>
       <Image
-        source={require("../../../assets/img/user-guest.jpg")}
+        source={require("../../../../assets/img/user-guest.jpg")}
         resizeMode="contain"
         style={styles.image}
       />
@@ -25,41 +30,9 @@ export default function UserGuest() {
           title="Ver tu perfil"
           buttonStyle={styles.btnStyle}
           containerStyle={styles.btnContainer}
-          onPress={() => navigation.navigate(screen.account.login)}
+          onPress={goToLogin}
         />
       </View>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  viewBody: {
-    marginLeft: 30,
-    marginRight: 30,
-  },
-  image: {
-    height: 300,
-    width: "100%",
-    marginBottom: 40,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 19,
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  description: {
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  viewBtn: {
-    flex: 1,
-    alignItems: "center",
-  },
-  btnStyle: {
-    backgroundColor: "#00a680",
-  },
-  btnContainer: {
-    width: "70%",
-  },
-});

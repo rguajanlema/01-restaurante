@@ -1,18 +1,20 @@
 import React, { useRef } from "react";
-import { StyleSheet, ScrollView, View, Text, Image } from "react-native";
+import { ScrollView, View, Text, Image } from "react-native";
 import { Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-easy-toast";
-import LoginForm from "../../components/Account/LoginForm";
+import { LoginForm } from "../../../components/Auth";
+import { styles } from "./Login.styles";
+import { screen } from "../../../utils";
 
-export default function Login() {
+export function Login() {
   const navigation = useNavigation();
   const toastRef = useRef();
 
   return (
     <ScrollView>
       <Image
-        source={require("../../../assets/img/5-tenedores-letras-icono-logo.png")}
+        source={require("../../../../assets/img/5-tenedores-letras-icono-logo.png")}
         resizeMode="center"
         style={styles.logo}
       />
@@ -29,41 +31,16 @@ export default function Login() {
 
 function CreateAccount() {
   const navigation = useNavigation();
+  const goToRegister = () => {
+    navigation.navigate(screen.account.register);
+  };
 
   return (
     <Text style={styles.textRegister}>
       Aun no tienes una cuenta?{" "}
-      <Text
-        style={styles.btnRegister}
-        onPress={() => navigation.navigate("register")}
-      >
+      <Text style={styles.btnRegister} onPress={() => goToRegister}>
         Registrate
       </Text>
     </Text>
   );
 }
-
-const styles = StyleSheet.create({
-  logo: {
-    width: "100%",
-    height: 150,
-    marginTop: 20,
-  },
-  viewContainer: {
-    marginRight: 40,
-    marginLeft: 40,
-  },
-  textRegister: {
-    marginTop: 15,
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  btnRegister: {
-    color: "#00a680",
-    fontWeight: "bold",
-  },
-  divider: {
-    backgroundColor: "#00a680",
-    margin: 40,
-  },
-});

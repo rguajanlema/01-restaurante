@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Dimensions } from "react-native";
+import { ScrollView, Dimensions, View, Text } from "react-native";
 import {
   doc,
   onSnapshot,
@@ -8,7 +8,7 @@ import {
   where,
   orderBy,
 } from "firebase/firestore";
-import { Carousel } from "../../../components/Shared";
+import { Carousel, Loading } from "../../../components/Shared";
 import { db } from "../../../utils";
 import { styles } from "./Restaurant.styles";
 
@@ -25,7 +25,7 @@ export default function Restaurant(props) {
     });
   }, [route.params.id]);
 
-  if (!restaurant) return null;
+  if (!restaurant) return <Loading show text="Cargando" />;
 
   return (
     <ScrollView style={styles.content}>

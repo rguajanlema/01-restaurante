@@ -14,7 +14,7 @@ import {
 } from "firebase/firestore";
 import { map, size } from "lodash";
 
-import Loading from "../components/Loading";
+import Loading from "../components/Shared";
 
 const db = getFirestore(firebaseApp);
 

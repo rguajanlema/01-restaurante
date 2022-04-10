@@ -1,1 +1,1 @@
-export * from "./UserLogged.styles";
+export * from "./UserLogged";

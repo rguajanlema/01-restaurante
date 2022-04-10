@@ -11,7 +11,7 @@ import {
 import { Image, Icon, Button } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
 import Toast from "react-native-easy-toast";
-import Loading from "../components/Loading";
+import Loading from "../components/Shared";
 
 import { firebaseApp } from "../utils/firebase";
 import {
@@ -109,7 +109,7 @@ export default function Favorites(props) {
         </View>
       )}
       <Toast ref={toastRef} position="center" opacity={0.9} />
-      <Loading text="Eliminando restaurante" isVisible={isLoading} />
+      <Loading text="Eliminando restaurante" show />
     </View>
   );
 }
