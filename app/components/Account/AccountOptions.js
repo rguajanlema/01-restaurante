@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ListItem, Icon } from "react-native-elements";
 import { map } from "lodash";
-import Modal from "../../components/Shared";
-import ChangeDisplayNameForm from "./ChangeDisplayNameForm";
+import { Modal } from "../../components";
+import { ChangeDisplayNameForm } from "./ChangeDisplayNameForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 
-export default function AccountOptions(props) {
+export function AccountOptions(props) {
   const { userInfo, toastRef, setRealoadUserInfo } = props;
   const [showModal, setShowModal] = useState(false);
   const [renderComponent, setRenderComponent] = useState(null);
@@ -48,7 +48,7 @@ export default function AccountOptions(props) {
         break;
     }
   };
-  const menuOptions = generateOptions(selectedComponent);
+  const menuOptions = getMenuOptions(selectedComponent);
 
   return (
     <View>
@@ -71,7 +71,7 @@ export default function AccountOptions(props) {
   );
 }
 
-function generateOptions(selectedComponent) {
+function getMenuOptions(selectedComponent) {
   return [
     {
       title: "Cambiar Nombre y Apellidos",

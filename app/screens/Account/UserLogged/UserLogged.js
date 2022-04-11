@@ -2,12 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { Button } from "react-native-elements";
 import { getAuth, signOut } from "firebase/auth";
-import Toast from "react-native-easy-toast";
+import { LoadingModal } from "../../../components";
 
 //components
-import Loading from "../../../components/Shared";
-import { InfoUser } from "../../../components/Account/InfoUser";
-import { AccountOptions } from "../../../components/Account/AccountOptions";
+import { InfoUser, AccountOptions } from "../../../components/Account";
 import { styles } from "./UserLogged.styles";
 
 export function UserLogged() {
@@ -42,7 +40,6 @@ export function UserLogged() {
           setLoadingText={setLoadingText}
         />
       )}
-
       <AccountOptions
         userInfo={userInfo}
         toastRef={toastRef}
@@ -54,8 +51,7 @@ export function UserLogged() {
         titleStyle={styles.btnCloseSessionText}
         onPress={logout}
       />
-      <Toast ref={toastRef} position="center" opacity={0.9} />
-      <Loading text={loadingText} show />
+      <LoadingModal show={loading} text={loadingText} />
     </View>
   );
 }

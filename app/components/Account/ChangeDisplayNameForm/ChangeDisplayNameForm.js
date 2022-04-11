@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { getAuth, updateProfile } from "firebase/auth";
+import { styles } from "./ChangeDisplayNameForm.styles";
 
 const auth = getAuth();
 
-export default function ChangeDisplayNameForm(props) {
+export function ChangeDisplayNameForm(props) {
   const { displayName, setShowModal, toastRef, setRealoadUserInfo } = props;
   const [newDisplayName, setNewDisplayName] = useState(null);
   const [error, setError] = useState(null);
@@ -60,21 +61,3 @@ export default function ChangeDisplayNameForm(props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  input: {
-    marginBottom: 10,
-  },
-  btnContainer: {
-    marginTop: 20,
-    width: "95%",
-  },
-  btn: {
-    backgroundColor: "#00a680",
-  },
-});

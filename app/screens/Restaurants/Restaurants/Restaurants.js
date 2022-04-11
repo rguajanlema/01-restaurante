@@ -29,7 +29,6 @@ export default function Restaurants(props) {
     onSnapshot(q, (snapshot) => {
       setRestaurants(snapshot.docs);
     });
-    console.log("hola");
   }, []);
 
   const goToAddRestaurant = () => {
