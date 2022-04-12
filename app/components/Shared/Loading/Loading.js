@@ -10,7 +10,7 @@ export function Loading(props) {
 
   return (
     <Overlay
-      //isVisible={show}
+      isVisible={show}
       windowBackgroundColor="rgba(0, 0, 0, 0.5)"
       overlayBackgroundColor="transparent"
       overlayStyle={styles.overlay}
