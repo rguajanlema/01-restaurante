@@ -5,8 +5,6 @@ import { styles } from "./Header.styles";
 
 export function Header(props) {
   const { restaurant } = props;
-
-  console.log(restaurant);
   return (
     <View style={styles.content}>
       <View style={styles.titleView}>

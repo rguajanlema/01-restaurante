@@ -33,7 +33,7 @@ export default function Restaurant(props) {
       <Carousel arrayImages={restaurant.images} height={250} width={width} />
       <Header restaurant={restaurant} />
       <Info restaurant={restaurant} />
-      <BtnReviewForm idResturant={restaurant.id} />
+      <BtnReviewForm idRestaurant={restaurant.id} />
     </ScrollView>
   );
 }

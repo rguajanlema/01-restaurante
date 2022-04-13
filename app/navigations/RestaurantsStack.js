@@ -4,7 +4,7 @@ import { screen } from "../utils";
 import Restaurants from "../screens/Restaurants/Restaurants/Restaurants";
 import AddRestaurant from "../screens/Restaurants/AddRestaurant/AddRestaurant";
 import Restaurant from "../screens/Restaurants/Restaurant/Restaurant";
-import AddReviewRestaurant from "../screens/Restaurants/AddReviewRestaurant";
+import { AddReviewRestaurant } from "../screens/Restaurants/AddReviewRestaurant";
 
 const Stack = createNativeStackNavigator();
 
