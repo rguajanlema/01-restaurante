@@ -1,10 +1,22 @@
 import React, { useState, useRef } from "react";
 import { View, Text } from "react-native";
 import { AirbnbRating, Button, Input } from "react-native-elements";
+import { useFormik } from "formik";
+import { initialValues, validationSchema } from "./AddReviewRestaurant.data";
 import { styles } from "./AddReviewRestaurant.styles";
+import { async } from "@firebase/util";
 
 export function AddReviewRestaurant(props) {
-  console.log(props);
+  const { route } = props;
+
+  const formik = useFormik({
+    initialValues: initialValues(),
+    validationSchema: validationSchema(),
+    validateOnChange: false,
+    onSubmit: async (formValue) => {
+      console.log(formValue);
+    },
+  });
 
   return (
     <View style={styles.content}>
@@ -19,17 +31,23 @@ export function AddReviewRestaurant(props) {
               "Muy bueno",
               "Excelente",
             ]}
-            defaultRating={0}
+            defaultRating={formik.values.rating}
             size={35}
-            onFinishRating={(rating) => console.log(rating)}
+            onFinishRating={(rating) => formik.setFieldValue("rating", rating)}
           />
         </View>
         <View>
-          <Input placeholder="Titulo" />
+          <Input
+            placeholder="Titulo"
+            onChangeText={(text) => formik.setFieldValue("title", text)}
+            errorMessage={formik.errors.title}
+          />
           <Input
             placeholder="Comentario"
             multiline
             inputContainerStyle={styles.comment}
+            onChangeText={(text) => formik.setFieldValue("comment", text)}
+            errorMessage={formik.errors.comment}
           />
         </View>
       </View>
@@ -37,6 +55,8 @@ export function AddReviewRestaurant(props) {
         title="Enviar review"
         containerStyle={styles.btnContainer}
         buttonStyle={styles.btn}
+        onPress={formik.handleSubmit}
+        loading={formik.isSubmitting}
       />
     </View>
   );

@@ -5,7 +5,7 @@ import { styles } from "./Loading.styles";
 
 export function Loading(props) {
   const { show, text } = props;
-  console.log("loading");
+
   if (!show) return null;
 
   return (
