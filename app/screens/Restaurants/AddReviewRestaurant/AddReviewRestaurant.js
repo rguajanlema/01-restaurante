@@ -2,9 +2,21 @@ import React, { useState, useRef } from "react";
 import { View, Text } from "react-native";
 import { AirbnbRating, Button, Input } from "react-native-elements";
 import { useFormik } from "formik";
+import Toast from "react-native-easy-toast";
+import { getAuth } from "firebase/auth";
+import {
+  doc,
+  setDoc,
+  query,
+  collection,
+  where,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../../utils";
+import { v4 as uuidv4 } from "uuid";
 import { initialValues, validationSchema } from "./AddReviewRestaurant.data";
 import { styles } from "./AddReviewRestaurant.styles";
-import { async } from "@firebase/util";
 
 export function AddReviewRestaurant(props) {
   const { route } = props;
@@ -14,7 +26,26 @@ export function AddReviewRestaurant(props) {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      console.log(formValue);
+      try {
+        const auth = getAuth();
+        const idDoc = uuidv4();
+        const newData = formValue;
+
+        newData.id = idDoc;
+        newData.idRestaurant = route.params.idRestaurant;
+        newData.idUser = auth.currentUser.uid;
+        newData.avatar = auth.currentUser.photoURL;
+        newData.createdAt = new Date();
+
+        await setDoc(doc(db, "reviews", idDoc), newData);
+      } catch (error) {
+        console.log(error);
+        Toast.show({
+          type: "error",
+          position: "bottom",
+          text1: "Error al enviar la review",
+        });
+      }
     },
   });
 
