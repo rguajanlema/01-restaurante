@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, Dimensions, View, Text } from "react-native";
-import {
-  doc,
-  onSnapshot,
-  collection,
-  query,
-  where,
-  orderBy,
-} from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { Carousel, Loading } from "../../../components/Shared";
 import {
   Header,
   Info,
   BtnReviewForm,
   Reviews,
+  BtnFavorite,
 } from "../../../components/Restaurant";
 import { db } from "../../../utils";
 import { styles } from "./Restaurant.styles";
@@ -40,6 +34,7 @@ export default function Restaurant(props) {
       <Info restaurant={restaurant} />
       <BtnReviewForm idRestaurant={route.params.id} />
       <Reviews idRestaurant={route.params.id} />
+      <BtnFavorite idRestaurant={route.params.id} />
     </ScrollView>
   );
 }
