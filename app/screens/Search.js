@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, ScrollView, Text } from "react-native";
 import { SearchBar, ListItem, Icon, Avatar } from "react-native-elements";
-
+import { useNavigation } from "@react-navigation/native";
+import { screen } from "../utils";
 import {
-  getFirestore,
   collection,
   query,
   startAt,
@@ -19,6 +19,7 @@ import { db } from "../utils";
 export function Search() {
   const [searchText, setSerachText] = useState("");
   const [searchResults, setSearchResults] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -33,9 +34,16 @@ export function Search() {
       const querySnapshot = await getDocs(q);
       setSearchResults(querySnapshot.docs);
     })();
-  }),
-    [searchText];
+  }, [searchText]);
 
+  const goToRestaurant = (idRestaurant) => {
+    navigation.navigate(screen.restaurant.tab, {
+      screen: screen.restaurant.restaurant,
+      params: {
+        id: idRestaurant,
+      },
+    });
+  };
   return (
     <>
       <SearchBar
@@ -58,7 +66,7 @@ export function Search() {
               <ListItem
                 key={data.id}
                 bottomDivider
-                onPress={() => console.log("Goto")}
+                onPress={() => goToRestaurant(data.id)}
               >
                 <Avatar source={{ uri: data.images[0] }} rounded />
                 <ListItem.Content>
