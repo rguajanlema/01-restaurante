@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { ScrollView, Text } from "react-native";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   doc,
@@ -9,10 +9,14 @@ import {
   where,
   onSnapshot,
 } from "firebase/firestore";
-import { size } from "lodash";
+import { size, map } from "lodash";
 import { db } from "../utils";
 import { Loading } from "../components/Shared";
-import { UserNotLogged, NotFoundRestaurants } from "../components/Favorites";
+import {
+  UserNotLogged,
+  NotFoundRestaurants,
+  RestaurantFavorite,
+} from "../components/Favorites";
 
 export function Favorites() {
   const [hasLogged, setHasLogged] = useState(null);
@@ -53,8 +57,10 @@ export function Favorites() {
   if (size(restaurants) === 0) return <NotFoundRestaurants />;
 
   return (
-    <View>
-      <Text>Favorites</Text>
-    </View>
+    <ScrollView>
+      {map(restaurants, (restaurant) => (
+        <RestaurantFavorite key={restaurant.id} restaurant={restaurant} />
+      ))}
+    </ScrollView>
   );
 }
