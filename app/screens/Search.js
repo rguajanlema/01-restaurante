@@ -14,10 +14,27 @@ import {
 } from "firebase/firestore";
 import { map, size } from "lodash";
 import { Loading } from "../components/Shared";
+import { db } from "../utils";
 
 export function Search() {
   const [searchText, setSerachText] = useState("");
   const [searchResults, setSearchResults] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const q = query(
+        collection(db, "restaurants"),
+        orderBy("name"),
+        startAt(searchText),
+        endAt(`${searchText}\uf8ff`),
+        limit(20)
+      );
+
+      const querySnapshot = await getDocs(q);
+      setSearchResults(querySnapshot.docs);
+    })();
+  }),
+    [searchText];
 
   return (
     <>
