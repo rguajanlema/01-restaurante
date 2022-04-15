@@ -2,8 +2,11 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Text, Image, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
-import { screen } from "../../../utils";
+import { doc, deleteDoc } from "firebase/firestore";
+
+import { db, screen } from "../../../utils";
 import { styles } from "./RestaurantFavorite.styles";
+import { async } from "@firebase/util";
 
 export function RestaurantFavorite(props) {
   const { restaurant } = props;
@@ -18,8 +21,12 @@ export function RestaurantFavorite(props) {
     });
   };
 
-  const onRemoveFavorite = () => {
-    console.log("Eliminar de favoritos");
+  const onRemoveFavorite = async () => {
+    try {
+      await deleteDoc(doc(db, "favorites", restaurant.idFavorite));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
