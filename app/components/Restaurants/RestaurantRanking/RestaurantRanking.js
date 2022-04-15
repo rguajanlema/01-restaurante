@@ -1,11 +1,22 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Image, Text, Rating, Icon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+import { screen } from "../../../utils";
 import { styles } from "./RestaurantRanking.styles";
 
 export function RestaurantRanking(props) {
   const { restaurant, index } = props;
+  const navigation = useNavigation();
 
+  const goToRestaurant = () => {
+    navigation.navigate(screen.restaurant.tab, {
+      screen: screen.restaurant.restaurant,
+      params: {
+        id: restaurant.id,
+      },
+    });
+  };
   const renderMedal = () => {
     if (index > 2) return null;
 
@@ -25,7 +36,7 @@ export function RestaurantRanking(props) {
     );
   };
   return (
-    <TouchableOpacity onPress={() => console.log("Go to screen")}>
+    <TouchableOpacity onPress={goToRestaurant}>
       <View style={styles.content}>
         <Image source={{ uri: restaurant.images[0] }} style={styles.image} />
         <View style={styles.infoContent}>
