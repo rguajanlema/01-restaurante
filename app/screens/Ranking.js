@@ -1,22 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text } from "react-native";
-import Toast from "react-native-easy-toast";
-import LisTopRestaurants from "../components/Ranking/LisTopRestaurants";
 
 import {
   collection,
-  getDocs,
-  getFirestore,
+  doc,
+  getDoc,
   limit,
   onSnapshot,
   orderBy,
   query,
 } from "firebase/firestore";
 
-import { size } from "lodash";
+import { map, size } from "lodash";
 import { db } from "../utils";
+import { RestaurantRanking } from "../components/Restaurants";
 
-export default function TopRestaurants() {
+export function Ranking() {
   const [restaurants, setRestaurants] = useState(null);
 
   useEffect(() => {
@@ -26,14 +25,20 @@ export default function TopRestaurants() {
       limit(5)
     );
 
-    onSnapshot(q, (snapshot) => {
-      setRestaurants(snapshot.docs);
+    onSnapshot(q, async (snapshot) => {
+      let restaurantArray = [];
+      for await (const item of snapshot.docs) {
+        restaurantArray.push(item.data());
+      }
+      setRestaurants(restaurantArray);
     });
   }, []);
 
   return (
     <View>
-      <LisTopRestaurants />
+      {map(restaurants, (restaurant, index) => (
+        <RestaurantRanking restaurant={restaurant} index={index} />
+      ))}
     </View>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import TopRestaurants from "../screens/TopRestaurants";
+import { Ranking } from "../screens/Ranking";
 import { screen } from "../utils";
 
 const Stack = createStackNavigator();
@@ -10,8 +10,8 @@ export default function TopRestaurantsStack() {
     <Stack.Navigator>
       <Stack.Screen
         name={screen.ranking.ranking}
-        component={TopRestaurants}
-        options={{ title: "Top 5" }}
+        component={Ranking}
+        options={{ title: "Ranking" }}
       />
     </Stack.Navigator>
   );
