@@ -9,8 +9,10 @@ import {
   where,
   onSnapshot,
 } from "firebase/firestore";
+import { size } from "lodash";
 import { db } from "../utils";
-import { UserNotLogged } from "../components/Favorites";
+import { Loading } from "../components/Shared";
+import { UserNotLogged, NotFoundRestaurants } from "../components/Favorites";
 
 export function Favorites() {
   const [hasLogged, setHasLogged] = useState(null);
@@ -45,6 +47,10 @@ export function Favorites() {
   }, []);
 
   if (!hasLogged) return <UserNotLogged />;
+
+  if (!restaurants) return <Loading show text="Cargando" />;
+
+  if (size(restaurants) === 0) return <NotFoundRestaurants />;
 
   return (
     <View>
