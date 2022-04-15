@@ -3,44 +3,37 @@ import { View, Text } from "react-native";
 import Toast from "react-native-easy-toast";
 import LisTopRestaurants from "../components/Ranking/LisTopRestaurants";
 
-import { firebaseApp } from "../utils/firebase";
 import {
   collection,
   getDocs,
   getFirestore,
   limit,
+  onSnapshot,
   orderBy,
   query,
 } from "firebase/firestore";
 
-const db = getFirestore(firebaseApp);
+import { size } from "lodash";
+import { db } from "../utils";
 
-export default function TopRestaurants(props) {
-  const { navigation } = props;
-  const [restaurants, setRestaurants] = useState([]);
-  const toastRef = useRef();
+export default function TopRestaurants() {
+  const [restaurants, setRestaurants] = useState(null);
 
   useEffect(() => {
-    const firstQuery = query(
+    const q = query(
       collection(db, "restaurants"),
-      orderBy("createAt", "desc"),
+      orderBy("ratingMedia", "desc"),
       limit(5)
     );
-    getDocs(firstQuery).then((response) => {
-      const restauranArray = [];
-      response.forEach((doc) => {
-        const data = doc.data();
-        data.id = doc.id;
-        restauranArray.push(data);
-      });
-      setRestaurants(restauranArray);
+
+    onSnapshot(q, (snapshot) => {
+      setRestaurants(snapshot.docs);
     });
   }, []);
 
   return (
     <View>
-      <LisTopRestaurants restaurants={restaurants} navigation={navigation} />
-      <Toast ref={toastRef} position="center" opacity={0.9} />
+      <LisTopRestaurants />
     </View>
   );
 }
