@@ -12,10 +12,9 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../../../utils";
-import { size, forEach, forEachRight } from "lodash";
+import { size, forEach } from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import { styles } from "./BtnFavorite.styles";
-import { async } from "@firebase/util";
 
 export function BtnFavorite(props) {
   const { idRestaurant } = props;
@@ -48,6 +47,7 @@ export function BtnFavorite(props) {
 
     return result.docs;
   };
+
   const addFavorite = async () => {
     try {
       const idFavorite = uuidv4();

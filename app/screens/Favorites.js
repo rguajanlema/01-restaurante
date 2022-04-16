@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text } from "react-native";
+import { ScrollView } from "react-native";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   doc,
@@ -27,28 +27,30 @@ export function Favorites() {
     onAuthStateChanged(auth, (user) => {
       setHasLogged(user ? true : false);
     });
-  }, []);
+  }, [hasLogged]);
 
   useEffect(() => {
-    const q = query(
-      collection(db, "favorites"),
-      where("idUser", "==", auth.currentUser.uid)
-    );
+    if (hasLogged) {
+      const q = query(
+        collection(db, "favorites"),
+        where("idUser", "==", auth.currentUser.uid)
+      );
 
-    onSnapshot(q, async (snapshot) => {
-      let restaurantArray = [];
-      for await (const item of snapshot.docs) {
-        const data = item.data();
-        const docRef = doc(db, "restaurants", data.idRestaurant);
-        const docSnap = await getDoc(docRef);
-        const newData = docSnap.data();
-        newData.idFavorite = data.id;
+      onSnapshot(q, async (snapshot) => {
+        let restaurantArray = [];
+        for await (const item of snapshot.docs) {
+          const data = item.data();
+          const docRef = doc(db, "restaurants", data.idRestaurant);
+          const docSnap = await getDoc(docRef);
+          const newData = docSnap.data();
+          newData.idFavorite = data.id;
 
-        restaurantArray.push(newData);
-      }
-      setRestaurants(restaurantArray);
-    });
-  }, []);
+          restaurantArray.push(newData);
+        }
+        setRestaurants(restaurantArray);
+      });
+    }
+  }, [hasLogged]);
 
   if (!hasLogged) return <UserNotLogged />;
 
