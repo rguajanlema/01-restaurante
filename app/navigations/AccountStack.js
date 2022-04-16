@@ -23,7 +23,7 @@ export default function AccountStack() {
       <Stack.Screen
         name={screen.account.register}
         component={Register}
-        options={{ title: "Registro" }}
+        options={{ title: "Crear tu cuenta" }}
       />
     </Stack.Navigator>
   );

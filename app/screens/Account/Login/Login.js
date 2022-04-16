@@ -11,6 +11,10 @@ export function Login() {
   const navigation = useNavigation();
   const toastRef = useRef();
 
+  const goToRegister = () => {
+    navigation.navigate(screen.account.register);
+  };
+
   return (
     <ScrollView>
       <Image
@@ -20,27 +24,16 @@ export function Login() {
       />
       <View style={styles.viewContainer}>
         <LoginForm toastRef={toastRef} navigation={navigation} />
-        <CreateAccount />
+        <Text style={styles.textRegister}>
+          Aun no tienes una cuenta?{" "}
+          <Text style={styles.btnRegister} onPress={goToRegister}>
+            Registrate
+          </Text>
+        </Text>
       </View>
       <Divider style={styles.divider} />
       <Text>Social Login</Text>
       <Toast ref={toastRef} position="center" opacity={0.9} />
     </ScrollView>
-  );
-}
-
-function CreateAccount() {
-  const navigation = useNavigation();
-  const goToRegister = () => {
-    navigation.navigate(screen.account.register);
-  };
-
-  return (
-    <Text style={styles.textRegister}>
-      Aun no tienes una cuenta?{" "}
-      <Text style={styles.btnRegister} onPress={() => goToRegister}>
-        Registrate
-      </Text>
-    </Text>
   );
 }

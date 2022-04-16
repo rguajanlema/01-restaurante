@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
-import { size, isEmpty } from "lodash";
+import Toast from "react-native-easy-toast";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
@@ -10,27 +10,38 @@ import { styles } from "./RegisterForm.styles";
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./RegisterForm.data";
 
-const auth = getAuth();
-
-export function RegisterForm(props) {
-  const { toastRef } = props;
+export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-  const [formData, setFormData] = useState(defaultFormValue());
-  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: validationSchema(),
     validateOnChange: false,
-    onSubmit: (formValue) => {
-      console.log("Formulario eviando");
-      console.log(formValue);
+    onSubmit: async (formValue) => {
+      try {
+        const auth = getAuth();
+        await createUserWithEmailAndPassword(
+          auth,
+          formValue.email,
+          formValue.password
+        );
+        navigation.goBack();
+      } catch (error) {
+        Toast.current.show({
+          type: "error",
+          position: "bottom",
+          text1: "Error al registrase, intente mas tarde",
+        });
+      }
     },
   });
 
   const showHidenPassword = () => setShowPassword((prevState) => !prevState);
+
+  const showHidenRepeatPassword = () =>
+    setShowRepeatPassword((prevState) => !prevState);
 
   return (
     <View style={styles.formContainer}>
@@ -73,9 +84,9 @@ export function RegisterForm(props) {
         rightIcon={
           <Icon
             type="material-community"
-            name="eye-outline"
+            name={showRepeatPassword ? "eye-off-outline" : "eye-outline"}
             iconStyle={styles.iconStyle}
-            onPress={showHidenPassword}
+            onPress={showHidenRepeatPassword}
           />
         }
       />
@@ -84,8 +95,8 @@ export function RegisterForm(props) {
         containerStyle={styles.btnContainerRegister}
         buttonStyle={styles.btnRegister}
         onPress={formik.onSubmit}
+        loading={formik.isSubmitting}
       />
-      <Loading show text="Creando cuenta" />
     </View>
   );
 }
