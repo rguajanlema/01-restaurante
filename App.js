@@ -1,7 +1,7 @@
 import React from "react";
 import { LogBox } from "react-native";
 
-import Toast from "react-native-easy-toast";
+import Toast from "react-native-toast-message";
 import { decode, encode } from "base-64";
 import "react-native-get-random-values";
 //components

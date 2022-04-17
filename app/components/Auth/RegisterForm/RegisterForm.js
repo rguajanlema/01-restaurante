@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
-import Toast from "react-native-easy-toast";
+import Toast from "react-native-toast-message";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
@@ -48,8 +48,6 @@ export function RegisterForm() {
       <Input
         placeholder="Correo electronico"
         containerStyle={styles.inputForm}
-        onChange={(text) => formik.setFieldValue("email", text)}
-        errorMessage={formik.errors.email}
         rightIcon={
           <Icon
             type="material-community"
@@ -57,14 +55,14 @@ export function RegisterForm() {
             iconStyle={styles.iconRight}
           />
         }
+        onChangeText={(text) => formik.setFieldValue("email", text)}
+        errorMessage={formik.errors.email}
       />
       <Input
         placeholder="Contrasena"
         containerStyle={styles.inputForm}
         password={true}
         secureTextEntry={showPassword ? false : true}
-        onChange={(text) => formik.setFieldValue("password", text)}
-        errorMessage={formik.errors.password}
         rightIcon={
           <Icon
             type="material-community"
@@ -73,14 +71,14 @@ export function RegisterForm() {
             onPress={showHidenPassword}
           />
         }
+        onChangeText={(text) => formik.setFieldValue("password", text)}
+        errorMessage={formik.errors.password}
       />
       <Input
         placeholder="Repetir contrasena"
         containerStyle={styles.inputForm}
         password={true}
         secureTextEntry={showRepeatPassword ? false : true}
-        onChange={(text) => formik.setFieldValue("repeatpassword", text)}
-        errorMessage={formik.errors.repeatpassword}
         rightIcon={
           <Icon
             type="material-community"
@@ -89,12 +87,14 @@ export function RegisterForm() {
             onPress={showHidenRepeatPassword}
           />
         }
+        onChangeText={(text) => formik.setFieldValue("repeatpassword", text)}
+        errorMessage={formik.errors.repeatpassword}
       />
       <Button
         title="Unirse"
         containerStyle={styles.btnContainerRegister}
         buttonStyle={styles.btnRegister}
-        onPress={formik.onSubmit}
+        onPress={formik.handleSubmit}
         loading={formik.isSubmitting}
       />
     </View>

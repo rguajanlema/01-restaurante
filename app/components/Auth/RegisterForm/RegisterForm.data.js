@@ -15,7 +15,7 @@ export function validationSchema() {
       .email("El email no es correcto")
       .required("El email es obligatorio"),
     password: yup.string().required("La contrasena es obligatoria"),
-    repeatPassword: yup
+    repeatpassword: yup
       .string()
       .required("La contrasena es obligatoria")
       .oneOf([yup.ref("password")], "Las contrasenas tienen que ser iguales"),
